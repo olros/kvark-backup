@@ -8,7 +8,7 @@ import Paper from 'components/layout/Paper';
 const LINKS = [
   { link: 'https://tihlde.slack.com/archives/C01CJ0EQCFM', label: 'Kontakt oss på Slack', icon: ContactMailIcon },
   { link: 'mailto:index@tihlde.org', label: 'Kontakt oss med epost', icon: MailOutlineIcon },
-  { link: 'https://github.com/TIHLDE/Kvark/issues/new', label: 'Lag et issue i Github', icon: GithubIcon },
+  { link: 'https://github.com/TIHLDE/Kvark/issues/new/choose', label: 'Lag et issue i Github', icon: GithubIcon },
 ];
 
 const ErrorCard = () => {
