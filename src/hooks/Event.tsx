@@ -1,7 +1,8 @@
 import { useMutation, useInfiniteQuery, useQuery, useQueryClient, UseMutationResult } from 'react-query';
 import API from 'api/api';
-import { USER_EVENTS_QUERY_KEY } from 'hooks/User';
+import { USER_EVENTS_QUERY_KEY, USER_QUERY_KEY } from 'hooks/User';
 import { FORM_QUERY_KEY } from 'hooks/Form';
+import { NOTIFICATION_QUERY_KEY } from 'hooks/Notification';
 import { Event, EventRequired, EventCompact, Registration, PaginationResponse, RequestResponse } from 'types';
 
 export const EVENT_QUERY_KEY = 'event';
@@ -76,6 +77,8 @@ export const useCreateEventRegistration = (eventId: number): UseMutationResult<R
       queryClient.invalidateQueries([EVENT_QUERY_KEY, eventId]);
       queryClient.setQueryData([EVENT_QUERY_KEY, eventId, EVENT_QUERY_KEY_REGISTRATION, data.user_info.user_id], data);
       queryClient.invalidateQueries([USER_EVENTS_QUERY_KEY]);
+      queryClient.invalidateQueries([USER_QUERY_KEY]);
+      queryClient.invalidateQueries([NOTIFICATION_QUERY_KEY]);
     },
   });
 };

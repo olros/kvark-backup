@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
     margin: 'auto',
     padding: theme.spacing(0, 1),
     display: 'grid',
-    gridTemplateColumns: '170px 1fr 170px',
+    gridTemplateColumns: '172px 1fr 172px',
   },
   filledTopbar: {
     position: 'fixed',
@@ -77,7 +77,7 @@ const useStyles = makeStyles((theme) => ({
   },
   right: {
     display: 'flex',
-    justifyContent: 'flex-end',
+    justifyContent: 'space-evenly',
   },
   selected: {
     borderBottom: '2px solid ' + theme.palette.getContrastText(theme.palette.colors.gradient.main.top),
@@ -88,8 +88,8 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   avatar: {
-    width: 45,
-    height: 45,
+    width: 55,
+    height: 55,
   },
   topbarItem: {
     alignSelf: 'center',
