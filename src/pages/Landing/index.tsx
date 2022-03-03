@@ -35,7 +35,7 @@ const Landing = () => {
   return (
     <Page banner={<Wave />} maxWidth={false} options={{ title: 'Forsiden' }}>
       <Smoke>
-        <BadgeInput flagCount={10} title='CTF Vår 2022' />
+        <BadgeInput flagCount={11} title='CTF Vår 2022' />
         <Section maxWidth='lg' sx={{ px: { xs: 0, lg: 2 } }}>
           <NewStudentBox />
           <StoriesView />

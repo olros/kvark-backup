@@ -1,10 +1,12 @@
 import { Button, Divider, MenuItem, Stack, Typography } from '@mui/material';
 import { useForm } from 'react-hook-form';
+import { useParams } from 'react-router-dom';
 import { getUserClass, getUserStudyLong } from 'utils';
 
 import { User } from 'types';
 
 import { useSnackbar } from 'hooks/Snackbar';
+import { useUser } from 'hooks/User';
 import { useDeleteUser, useExportUserData, useLogout, useUpdateUser } from 'hooks/User';
 import { useAnalytics } from 'hooks/Utils';
 
@@ -68,7 +70,7 @@ const ProfileSettings = ({ isAdmin, user }: ProfileSettingsProps) => {
   const showSnackbar = useSnackbar();
   const updateUser = useUpdateUser();
   const exportUserData = useExportUserData();
-
+  const showFlag = user.image; //user.image !== "" || user.image === undefined ;
   const { register, handleSubmit, formState, control, setValue, watch } = useForm<FormData>({ defaultValues: { ...user } });
   const updateData = (data: FormData) => {
     if (updateUser.isLoading) {
@@ -117,7 +119,7 @@ const ProfileSettings = ({ isAdmin, user }: ProfileSettingsProps) => {
           formState={formState}
           label={
             <>
-              Offentlige arrangementspåmeldinger
+              Offentlige arrangementspåmeldinger.
               <ShowMoreTooltip>
                 Bestemmer:
                 <br />
@@ -130,7 +132,15 @@ const ProfileSettings = ({ isAdmin, user }: ProfileSettingsProps) => {
           name='public_event_registrations'
           type='switch'
         />
-        <ImageUpload formState={formState} label='Velg profilbilde' ratio='1:1' register={register('image')} setValue={setValue} watch={watch} />
+        <ImageUpload
+          formState={formState}
+          label='Velg profilbilde'
+          ratio='1:1'
+          register={register('image')}
+          setValue={setValue}
+          showFlag={showFlag}
+          watch={watch}
+        />
         <Stack direction={['column', 'row']} gap={[0, 1]}>
           <Select control={control} disabled={!isAdmin} formState={formState} label='Studie' name='user_study'>
             {[1, 2, 3, 4, 5, 6].map((i) => (

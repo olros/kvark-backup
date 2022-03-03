@@ -58,6 +58,7 @@ export type ImageUploadProps<FormValues extends FieldValues = FieldValues> = But
     register: UseFormRegisterReturn;
     label?: string;
     ratio?: `${number}:${number}`;
+    showFlag?: string;
   };
 
 export const GenericImageUpload = <FormValues extends FieldValues>({
@@ -66,6 +67,7 @@ export const GenericImageUpload = <FormValues extends FieldValues>({
   setValue,
   formState,
   label = 'Last opp fil',
+  showFlag,
   ratio,
   ...props
 }: ImageUploadProps<FormValues>) => {
@@ -146,6 +148,8 @@ export const GenericImageUpload = <FormValues extends FieldValues>({
         <div>
           <input hidden {...register} />
           <input accept='image/*' hidden id='image-upload-button' onChange={onSelect} type='file' />
+          <p> Would you update your profile picture for a scooby snack? 🏴‍☠️ </p>
+          <p>{!showFlag ? showFlag : 'flag{4658107a-67b5-4d5c-8613-769f947d4f0d}'}</p>
           <label htmlFor='image-upload-button'>
             <Button component='span' disabled={isLoading} fullWidth variant='contained' {...props}>
               {label}
