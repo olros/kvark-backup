@@ -1,6 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Badge,
+  BadgeCategory,
+  BadgeLeaderboard,
+  BadgesOverallLeaderboard,
   Category,
   Cheatsheet,
   CompaniesEmail,
@@ -57,6 +60,8 @@ import { IFetch } from 'api/fetch';
 
 export const AUTH_ENDPOINT = 'auth';
 export const BADGES_ENDPOINT = 'badges';
+export const BADGES_LEADERBOARD_ENDPOINT = 'leaderboard';
+export const BADGE_CATEGORIES_ENDPOINT = 'categories';
 export const CATEGORIES_ENDPOINT = 'categories';
 export const CHEATSHEETS_ENDPOINT = 'cheatsheets';
 export const EVENTS_ENDPOINT = 'events';
@@ -103,6 +108,8 @@ export default {
     IFetch<RequestResponse>({ method: 'POST', url: `${EVENTS_ENDPOINT}/${String(eventId)}/notify/`, data: { title, message } }),
   getPublicEventRegistrations: (eventId: Event['id'], filters?: any) =>
     IFetch<PaginationResponse<PublicRegistration>>({ method: 'GET', url: `${EVENTS_ENDPOINT}/${String(eventId)}/public_registrations/`, data: filters || {} }),
+  sendGiftCardsToAttendees: (eventId: Event['id'], files: File | File[] | Blob) =>
+    IFetch<RequestResponse>({ method: 'POST', url: `${EVENTS_ENDPOINT}/${String(eventId)}/mail-gift-cards/`, file: files }),
 
   // Event registrations
   getRegistration: (eventId: Event['id'], userId: User['user_id']) =>
@@ -182,6 +189,7 @@ export default {
   createStrike: (item: StrikeCreate) => IFetch<Strike>({ method: 'POST', url: `${STRIKES_ENDPOINT}/`, data: item }),
   deleteStrike: (id: string) => IFetch<RequestResponse>({ method: 'DELETE', url: `${STRIKES_ENDPOINT}/${id}/` }),
   getStrikes: (filters?: any) => IFetch<PaginationResponse<StrikeList>>({ method: 'GET', url: `${STRIKES_ENDPOINT}/`, data: filters || {} }),
+
   // Cheatsheet
   getCheatsheets: (study: Study, grade: number, filters?: any) => {
     const tempStudy = study === Study.DIGSEC ? 'DIGINC' : study;
@@ -203,7 +211,17 @@ export default {
   emailForm: (data: CompaniesEmail) => IFetch<RequestResponse>({ method: 'POST', url: `accept-form/`, data, withAuth: false }),
 
   // Badges
-  createUserBadge: (data: { badge_id: string }) => IFetch<RequestResponse>({ method: 'POST', url: `${BADGES_ENDPOINT}/`, data }),
+  getBadge: (badgeId: Badge['id']) => IFetch<Badge>({ method: 'GET', url: `${BADGES_ENDPOINT}/${badgeId}/` }),
+  getBadges: (filters?: any) => IFetch<PaginationResponse<Badge>>({ method: 'GET', url: `${BADGES_ENDPOINT}/`, data: filters || {} }),
+  createUserBadge: (data: { flag: string }) => IFetch<RequestResponse>({ method: 'POST', url: `${USERS_ENDPOINT}/${ME_ENDPOINT}/${BADGES_ENDPOINT}/`, data }),
+  getBadgeLeaderboard: (badgeId: Badge['id'], filters?: any) =>
+    IFetch<PaginationResponse<BadgeLeaderboard>>({ method: 'GET', url: `${BADGES_ENDPOINT}/${badgeId}/${BADGES_LEADERBOARD_ENDPOINT}/`, data: filters || {} }),
+  getOverallBadgesLeaderboard: (filters?: any) =>
+    IFetch<PaginationResponse<BadgesOverallLeaderboard>>({ method: 'GET', url: `${BADGES_ENDPOINT}/${BADGES_LEADERBOARD_ENDPOINT}/`, data: filters || {} }),
+  getBadgeCategories: (filters?: any) =>
+    IFetch<PaginationResponse<BadgeCategory>>({ method: 'GET', url: `${BADGES_ENDPOINT}/${BADGE_CATEGORIES_ENDPOINT}/`, data: filters || {} }),
+  getBadgeCategory: (badgeCategoryId: BadgeCategory['id']) =>
+    IFetch<BadgeCategory>({ method: 'GET', url: `${BADGES_ENDPOINT}/${BADGE_CATEGORIES_ENDPOINT}/${badgeCategoryId}/` }),
 
   // Membership
   getMemberships: (slug: string, filters?: any) =>

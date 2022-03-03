@@ -13,7 +13,7 @@ type FetchProps = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data?: Record<string, unknown | any>;
   withAuth?: boolean;
-  file?: File | Blob;
+  file?: File | File[] | Blob;
 };
 
 export const IFetch = <T extends unknown>({ method, url, data = {}, withAuth = true, file }: FetchProps): Promise<T> => {
@@ -41,11 +41,15 @@ export const IFetch = <T extends unknown>({ method, url, data = {}, withAuth = t
     return response.json().then((responseData: T) => responseData);
   });
 };
-const request = (method: RequestMethodType, url: string, headers: Headers, data: Record<string, unknown>, file?: File | Blob) => {
+const request = (method: RequestMethodType, url: string, headers: Headers, data: Record<string, unknown>, files?: File | File[] | Blob) => {
   const getBody = () => {
-    if (file) {
+    if (files) {
       const data = new FormData();
-      data.append('file', file);
+      if (Array.isArray(files)) {
+        files.forEach((file) => data.append('file', file));
+      } else {
+        data.append('file', files);
+      }
       return data;
     } else {
       return method !== 'GET' ? JSON.stringify(data) : undefined;

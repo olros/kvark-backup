@@ -1,4 +1,4 @@
-import { Group } from 'types';
+import { Badge, BadgeCategory, Group } from 'types';
 
 const WIKI = '/wiki/';
 export const WIKI_URLS = {
@@ -8,6 +8,19 @@ export const WIKI_URLS = {
 };
 
 const URLS = {
+  badges: {
+    index: '/badges/',
+    category_relative: 'kategorier/',
+    categories: () => `${URLS.badges.index}${URLS.badges.category_relative}`,
+    category_leaderboard: (categoryId: BadgeCategory['id']) => `${URLS.badges.categories()}${categoryId}/`,
+    category_badges_relative: 'badges/',
+    category_badges: (categoryId: BadgeCategory['id']) => `${URLS.badges.category_leaderboard(categoryId)}${URLS.badges.category_badges_relative}`,
+    public_badges_relative: 'alle/',
+    public_badges: () => `${URLS.badges.index}${URLS.badges.public_badges_relative}`,
+    badge_leaderboard: (badgeId: Badge['id']) => `${URLS.badges.index}${badgeId}/`,
+    get_badge_relative: 'erverv/',
+    get_badge: () => `${URLS.badges.index}${URLS.badges.get_badge_relative}`,
+  },
   cheatsheet: '/kokebok/',
   company: '/bedrifter/',
   contactInfo: `${WIKI}${WIKI_URLS.CONTACT_US}`,
@@ -19,6 +32,8 @@ const URLS = {
   groups: {
     index: '/grupper/',
     details: (groupSlug: Group['slug']) => `${URLS.groups.index}${groupSlug}/`,
+    events_relative: 'arrangementer/',
+    events: (groupSlug: Group['slug']) => `${URLS.groups.details(groupSlug)}${URLS.groups.events_relative}`,
     fines_relative: 'boter/',
     fines: (groupSlug: Group['slug']) => `${URLS.groups.details(groupSlug)}${URLS.groups.fines_relative}`,
     forms_relative: 'sporreskjema/',

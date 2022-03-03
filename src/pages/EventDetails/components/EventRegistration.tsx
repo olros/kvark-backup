@@ -9,7 +9,7 @@ import { useForm } from 'react-hook-form';
 import URLS from 'URLS';
 import { getUserStudyShort, shortDownString } from 'utils';
 
-import { Event, Form, Submission, User } from 'types';
+import { Event, Submission, User } from 'types';
 
 import { useConfetti } from 'hooks/Confetti';
 import { useCreateEventRegistration } from 'hooks/Event';
@@ -50,7 +50,7 @@ const EventRegistration = ({ event, user }: EventRegistrationProps) => {
   const [allowPhoto, setAllowPhoto] = useState(true);
   const allergy = user.allergy ? shortDownString(user.allergy, 20) : 'Ingen';
 
-  const { register, handleSubmit, formState, setError, getValues, control } = useForm<Form['fields']>();
+  const { register, handleSubmit, formState, setError, getValues, control } = useForm<Submission>();
 
   const registerDisabled = isLoading || isFormLoading || !agreeRules;
 

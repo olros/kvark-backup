@@ -65,6 +65,9 @@ export const useDeleteEvent = (eventId: Event['id']): UseMutationResult<RequestR
   });
 };
 
+export const useSendGiftCardsToAttendees = (eventId: number): UseMutationResult<RequestResponse, RequestResponse, { files: File | File[] | Blob }, unknown> =>
+  useMutation(({ files }) => API.sendGiftCardsToAttendees(eventId, files));
+
 export const useNotifyEventRegistrations = (
   eventId: Event['id'],
 ): UseMutationResult<RequestResponse, RequestResponse, { title: string; message: string }, unknown> =>

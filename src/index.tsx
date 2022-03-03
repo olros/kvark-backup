@@ -28,23 +28,17 @@ import Navigation from 'components/navigation/Navigation';
 
 const SENTRY_DSN = import.meta.env.VITE_SENTRY_DSN;
 
-if (SENTRY_DSN) {
+if (SENTRY_DSN && import.meta.env.PROD) {
   Sentry.init({
     dsn: SENTRY_DSN,
     integrations: [new BrowserTracing()],
-    tracesSampleRate: 0.8,
+    tracesSampleRate: 0.5,
   });
 }
 
 export const muiCache = createCache({ key: 'mui', prepend: true });
 
-type ProvidersProps = {
-  children: ReactNode;
-};
-
-
-
-export const Providers = ({ children }: ProvidersProps) => {
+export const Providers = ({ children }: { children: ReactNode }) => {
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
@@ -78,23 +72,32 @@ export const Providers = ({ children }: ProvidersProps) => {
   );
 };
 
+const ErrorBoundary = ({ children }: { children: ReactNode }) =>
+  import.meta.env.PROD ? (
+    <Sentry.ErrorBoundary
+      dialogOptions={{
+        title: 'Det ser ut som vi har problemer',
+        subtitle: 'Index har blitt varslet.',
+        subtitle2: 'Hvis du vil hjelpe oss kan du fortelle oss hva som skjedde nedenfor.',
+        labelName: 'Navn',
+        labelEmail: 'Epost',
+        labelComments: 'Hva skjedde?',
+        labelClose: 'Lukk',
+        labelSubmit: 'Send',
+        errorGeneric: 'Det oppstod en ukjent feil under innsending av rapporten. Vennligst prøv igjen.',
+        errorFormEntry: 'Noen felt var ugyldige. Rett opp feilene og prøv igjen.',
+        successMessage: 'Din tilbakemelding er sendt. Tusen takk!',
+      }}
+      fallback={<a href='/'>Gå til forsiden</a>}
+      showDialog>
+      {children}
+    </Sentry.ErrorBoundary>
+  ) : (
+    <>{children}</>
+  );
+
 export const Application = () => (
-  <Sentry.ErrorBoundary
-    dialogOptions={{
-      title: 'Det ser ut som vi har problemer',
-      subtitle: 'Index har blitt varslet.',
-      subtitle2: 'Hvis du vil hjelpe oss kan du fortelle oss hva som skjedde nedenfor.',
-      labelName: 'Navn',
-      labelEmail: 'Epost',
-      labelComments: 'Hva skjedde?',
-      labelClose: 'Lukk',
-      labelSubmit: 'Send',
-      errorGeneric: 'Det oppstod en ukjent feil under innsending av rapporten. Vennligst prøv igjen.',
-      errorFormEntry: 'Noen felt var ugyldige. Rett opp feilene og prøv igjen.',
-      successMessage: 'Din tilbakemelding er sendt. Tusen takk!',
-    }}
-    fallback={<a href='/'>Gå til forsiden</a>}
-    showDialog>
+  <ErrorBoundary>
     <Providers>
       <BrowserRouter>
         <Navigation>
@@ -103,7 +106,7 @@ export const Application = () => (
         </Navigation>
       </BrowserRouter>
     </Providers>
-  </Sentry.ErrorBoundary>
+  </ErrorBoundary>
 );
 
 console.log(
@@ -128,6 +131,7 @@ console.log(
   '',
 );
 const rickroll = () => {
+  const RICKROLLED_BADGE_ID = '372e3278-3d8f-4c0e-a83a-f693804f8cbb';
   window.gtag('event', 'rickrolled', {
     event_category: 'easter-egg',
     event_label: 'Rickrolled in the console',
@@ -138,8 +142,10 @@ const rickroll = () => {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 (window as any).badge = rickroll;
 
-fetch(new Request(TIHLDE_API_URL + "gdpr", {
-    method: "GET",
-  }))
+fetch(
+  new Request(TIHLDE_API_URL + 'gdpr', {
+    method: 'GET',
+  }),
+);
 
 render(<Application />, document.getElementById('root'));

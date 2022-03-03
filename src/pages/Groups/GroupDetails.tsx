@@ -3,6 +3,7 @@ import LawIcon from '@mui/icons-material/GavelRounded';
 import FormsIcon from '@mui/icons-material/HelpOutlineRounded';
 import InfoIcon from '@mui/icons-material/InfoRounded';
 import FineIcon from '@mui/icons-material/LocalAtmRounded';
+import EventIcon from '@mui/icons-material/TodayRounded';
 import { Box, Divider, IconButton, Stack, Typography } from '@mui/material';
 import { useMemo } from 'react';
 import { Link, Navigate, Route, Routes, useParams } from 'react-router-dom';
@@ -13,6 +14,7 @@ import { useIsAuthenticated } from 'hooks/User';
 
 import GroupInfo from 'pages/Groups/about';
 import GroupAdmin from 'pages/Groups/components/GroupAdmin';
+import GroupEvents from 'pages/Groups/events';
 import GroupFines from 'pages/Groups/fines';
 import { FinesProvider } from 'pages/Groups/fines/FinesContext';
 import GroupForms from 'pages/Groups/forms';
@@ -39,7 +41,10 @@ const GroupDetails = () => {
     if (!data) {
       return [];
     }
-    const arr = [{ label: 'Om', to: URLS.groups.details(data.slug), icon: InfoIcon }];
+    const arr = [
+      { label: 'Om', to: URLS.groups.details(data.slug), icon: InfoIcon },
+      { label: 'Arrangementer', to: URLS.groups.events(data.slug), icon: EventIcon },
+    ];
     if (showFinesAndLaws) {
       arr.push({ label: 'Bøter', to: URLS.groups.fines(data.slug), icon: FineIcon });
       arr.push({ label: 'Lovverk', to: URLS.groups.laws(data.slug), icon: LawIcon });
@@ -86,6 +91,7 @@ const GroupDetails = () => {
       )}
       <Routes>
         <Route element={<GroupInfo />} path='' />
+        <Route element={<GroupEvents />} path={`${URLS.groups.events_relative}`} />
         {showFinesAndLaws && (
           <>
             <Route

@@ -43,7 +43,6 @@ const useStyles = makeStyles()((theme) => ({
   },
   drawerTop: {
     [theme.breakpoints.up('lg')]: {
-      // ...theme.mixins.toolbar,
       minHeight: 64,
     },
   },

@@ -7,6 +7,7 @@ import { Event } from 'types';
 import { useEventById, useEventRegistrations } from 'hooks/Event';
 import { useSnackbar } from 'hooks/Snackbar';
 
+import EventGiftCardSender from 'pages/EventAdministration/components/EventGiftCardSender';
 import EventMessageSender from 'pages/EventAdministration/components/EventMessageSender';
 import EventStatistics from 'pages/EventAdministration/components/EventStatistics';
 import Participant from 'pages/EventAdministration/components/Participant';
@@ -121,7 +122,10 @@ const EventParticipants = ({ eventId }: EventParticipantsProps) => {
         <Box sx={{ pt: 1, pb: 2 }}>
           <EventStatistics eventId={eventId} />
         </Box>
-        <EventMessageSender eventId={eventId} />
+        <Stack direction={{ xs: 'column', md: 'row' }} spacing={1} sx={{ mb: 1 }}>
+          <EventMessageSender eventId={eventId} />
+          <EventGiftCardSender eventId={eventId} />
+        </Stack>
         <Registrations eventId={eventId} />
         <Registrations eventId={eventId} onWait />
       </div>

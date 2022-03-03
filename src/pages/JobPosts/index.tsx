@@ -1,13 +1,14 @@
-import { Theme, useMediaQuery } from '@mui/material';
-import Button from '@mui/material/Button';
-import Divider from '@mui/material/Divider';
+import { Button, Divider, Theme, useMediaQuery } from '@mui/material';
 import { makeStyles } from 'makeStyles';
 import { Fragment, useCallback, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { argsToParams } from 'utils';
 
+import { UserClass } from 'types/Enums';
+
 import { useJobPosts } from 'hooks/JobPost';
+import { useUser } from 'hooks/User';
 import { useAnalytics } from 'hooks/Utils';
 
 import Bool from 'components/inputs/Bool';
@@ -58,38 +59,50 @@ const useStyles = makeStyles()((theme) => ({
   },
 }));
 
-type Filters = {
+type FormState = {
   search?: string;
+  classes?: boolean | undefined | UserClass[];
   expired: boolean;
 };
 
 const JobPosts = () => {
+  const { data: user } = useUser();
   const { event } = useAnalytics();
-  const getInitialFilters = useCallback((): Filters => {
+  const getInitialFilters = useCallback((): FormState => {
     const params = new URLSearchParams(location.search);
     const expired = params.get('expired') ? Boolean(params.get('expired') === 'true') : false;
     const search = params.get('search') || undefined;
-    return { expired, search };
+    const classesParam = params.get('classes');
+    const classes = classesParam ? [Number(classesParam)] : undefined;
+    return { classes, expired, search };
   }, []);
   const { classes } = useStyles();
   const navigate = useNavigate();
   const lgDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
-  const [filters, setFilters] = useState<Filters>(getInitialFilters());
+  const [filters, setFilters] = useState<FormState>(getInitialFilters());
   const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useJobPosts(filters);
-  const { register, control, handleSubmit, setValue, formState } = useForm<Filters>({ defaultValues: getInitialFilters() });
+  const { register, control, handleSubmit, setValue, formState } = useForm<FormState>({ defaultValues: getInitialFilters() });
   const isEmpty = useMemo(() => (data !== undefined ? !data.pages.some((page) => Boolean(page.results.length)) : false), [data]);
 
   const resetFilters = () => {
     setValue('search', '');
     setValue('expired', false);
+    setValue('classes', undefined);
+
     setFilters({ expired: false });
+
     navigate(`${location.pathname}${argsToParams({ expired: false })}`, { replace: true });
   };
 
-  const search = (data: Filters) => {
+  const search = (data: FormState) => {
     event('search', 'jobposts', JSON.stringify(data));
-    setFilters(data);
-    navigate(`${location.pathname}${argsToParams(data)}`, { replace: true });
+    const filters = {
+      search: data.search,
+      expired: data.expired,
+      classes: data.classes && user ? [user.user_class] : undefined,
+    };
+    setFilters(filters);
+    navigate(`${location.pathname}${argsToParams(filters)}`, { replace: true });
     !lgDown || setSearchFormExpanded((prev) => !prev);
   };
 
@@ -98,6 +111,7 @@ const JobPosts = () => {
   const SearchForm = () => (
     <form onSubmit={handleSubmit(search)}>
       <TextField disabled={isFetching} formState={formState} label='Søk' {...register('search')} />
+      {user && <Bool control={control} formState={formState} label='Relevant år' name='classes' type='switch' />}
       <Bool control={control} formState={formState} label='Tidligere' name='expired' type='switch' />
       <SubmitButton disabled={isFetching} formState={formState}>
         Søk

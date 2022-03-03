@@ -118,6 +118,9 @@ export const getUserClass = (userClass: UserClass) => {
   }
 };
 
+export const USER_CLASSES = [UserClass.FIRST, UserClass.SECOND, UserClass.THIRD, UserClass.FOURTH, UserClass.FIFTH, UserClass.ALUMNI];
+export const USER_STUDIES = [UserStudy.DATAING, UserStudy.DIGFOR, UserStudy.DIGSEC, UserStudy.DIGSAM, UserStudy.DRIFT, UserStudy.INFO];
+
 /**
  * Get jobpost type as text
  * @param jobpostType JobPost type

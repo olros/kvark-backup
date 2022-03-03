@@ -95,29 +95,18 @@ const FormTemplatePreview = ({ formtemplate, eventId, formType }: FormTemplatePr
 
 const EventFormAdmin = ({ eventId }: EventFormAdminProps) => {
   const { data: event, isLoading } = useEventById(eventId);
+
   if (isLoading || !event) {
     return <LinearProgress />;
   }
 
-  type EventFormEditorProps = {
-    formType: EventFormType;
-  };
-
-  const EventFormEditor = ({ formType }: EventFormEditorProps) => {
+  const FormTemplatesList = ({ formType }: Pick<EventFormEditorProps, 'formType'>) => {
     const createForm = useCreateForm();
     const showSnackbar = useSnackbar();
     const { data: formtemplates = [] } = useFormTemplates();
     const [isCreatingForm, setIsCreatingTemplate] = useState(false);
     const [formtemplateId, setFormtemplateId] = useState('-');
     const { data: form, isLoading, isError } = useFormById(formtemplateId);
-
-    const newForm: FormCreate = {
-      title: `${event.title} - ${formType === EventFormType.SURVEY ? 'påmeldingsskjema' : 'evalueringsskjema'}`,
-      type: formType,
-      event: event.id,
-      resource_type: FormResourceType.EVENT_FORM,
-      fields: [],
-    };
 
     const newFormTemplateCreate: FormCreate = {
       title: 'Ny mal',
@@ -126,8 +115,6 @@ const EventFormAdmin = ({ eventId }: EventFormAdminProps) => {
       viewer_has_answered: false,
       template: true,
     };
-
-    const onCreate = async () => createForm.mutate(newForm);
 
     const onCreateTemplate = () => {
       createForm.mutate(newFormTemplateCreate, {
@@ -141,27 +128,52 @@ const EventFormAdmin = ({ eventId }: EventFormAdminProps) => {
         },
       });
     };
+
+    return (
+      <>
+        {isCreatingForm ? (
+          <>{!isLoading && !isError && form && <FormFieldsEditor canEditTitle={true} form={form} onSave={() => setIsCreatingTemplate(false)} />}</>
+        ) : (
+          <>
+            <Typography gutterBottom variant='body2'>
+              Bruk en ferdiglagd mal som utgangspunkt når du oppretter ett skjema.
+            </Typography>
+            {formtemplates.map((formtemplate) => (
+              <FormTemplatePreview eventId={eventId} formtemplate={formtemplate} formType={formType} key={formtemplate.id} />
+            ))}
+            <Button onClick={onCreateTemplate} sx={{ mt: 1 }} variant='contained'>
+              Lag ny mal
+            </Button>
+          </>
+        )}
+      </>
+    );
+  };
+
+  type EventFormEditorProps = {
+    formType: EventFormType;
+  };
+
+  const EventFormEditor = ({ formType }: EventFormEditorProps) => {
+    const createForm = useCreateForm();
+
+    const newForm: FormCreate = {
+      title: `${event.title} - ${formType === EventFormType.SURVEY ? 'påmeldingsskjema' : 'evalueringsskjema'}`,
+      type: formType,
+      event: event.id,
+      resource_type: FormResourceType.EVENT_FORM,
+      fields: [],
+    };
+
+    const onCreate = async () => createForm.mutate(newForm);
+
     return (
       <>
         <Button fullWidth onClick={onCreate} variant='outlined'>
           Opprett {formType === EventFormType.SURVEY ? 'påmeldingsskjema' : 'evalueringsskjema'}
         </Button>
-        <Expand flat header='Bruk en mal' sx={{ mt: 1 }}>
-          {isCreatingForm ? (
-            <>{!isLoading && !isError && form && <FormFieldsEditor canEditTitle={true} form={form} onSave={() => setIsCreatingTemplate(false)} />}</>
-          ) : (
-            <>
-              <Typography gutterBottom variant='body2'>
-                Bruk en ferdiglagd mal som utgangspunkt når du oppretter ett skjema.
-              </Typography>
-              {formtemplates.map((formtemplate) => (
-                <FormTemplatePreview eventId={eventId} formtemplate={formtemplate} formType={formType} key={formtemplate.id} />
-              ))}
-              <Button onClick={onCreateTemplate} sx={{ mt: 1 }} variant='contained'>
-                Lag ny mal
-              </Button>
-            </>
-          )}
+        <Expand flat header='Bruk en mal' sx={{ mt: 1 }} TransitionProps={{ mountOnEnter: true }}>
+          <FormTemplatesList formType={formType} />
         </Expand>
       </>
     );

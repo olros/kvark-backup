@@ -133,6 +133,7 @@ const NavigationContent = ({ children }: NavigationProps) => {
             items: [
               { text: 'Kokebok', to: URLS.cheatsheet },
               { text: 'Link-forkorter', to: URLS.shortLinks },
+              { text: 'Badges ledertavler', to: URLS.badges.index },
             ],
             text: 'For medlemmer',
             type: 'dropdown',

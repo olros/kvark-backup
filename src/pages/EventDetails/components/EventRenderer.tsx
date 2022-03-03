@@ -92,7 +92,7 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
   type RegistrationInfoProps = { registration: Registration };
 
   const RegistrationInfo = ({ registration }: RegistrationInfoProps) => {
-    const unregisteringGivesStrike = isPast(signOffDeadlineDate) && !registration.is_on_wait;
+    const unregisteringGivesStrike = isPast(signOffDeadlineDate) && !registration.is_on_wait && data.can_cause_strikes;
     return (
       <>
         {registration.is_on_wait ? (

@@ -10,9 +10,9 @@ import NewsListView from 'pages/Landing/components/NewsListView';
 import NewStudentBox from 'pages/Landing/components/NewStudentBox';
 import StoriesView from 'pages/Landing/components/StoriesView';
 import Wave from 'pages/Landing/components/Wave';
-import BadgeInput from 'components/miscellaneous/BadgeInput';
 
 import Container from 'components/layout/Container';
+import BadgeInput from 'components/miscellaneous/BadgeInput';
 import Page from 'components/navigation/Page';
 
 const Section = styled(Container)(({ theme }) => ({
@@ -35,7 +35,7 @@ const Landing = () => {
   return (
     <Page banner={<Wave />} maxWidth={false} options={{ title: 'Forsiden' }}>
       <Smoke>
-        <BadgeInput flagCount={10} title="CTF Vår 2022"/>
+        <BadgeInput flagCount={10} title='CTF Vår 2022' />
         <Section maxWidth='lg' sx={{ px: { xs: 0, lg: 2 } }}>
           <NewStudentBox />
           <StoriesView />

@@ -1,3 +1,4 @@
+import { keyframes } from '@emotion/react';
 import SignupIcon from '@mui/icons-material/AddRounded';
 import LoginIcon from '@mui/icons-material/LoginRounded';
 import ProfileIcon from '@mui/icons-material/PersonOutlineRounded';
@@ -15,6 +16,20 @@ import TihldeLogo from 'components/miscellaneous/TihldeLogo';
 import { ReactComponent as WaveBottom } from 'assets/img/waves/wave-bottom.svg';
 import { ReactComponent as WaveMid } from 'assets/img/waves/wave-mid.svg';
 import { ReactComponent as WaveTop } from 'assets/img/waves/wave-top.svg';
+
+const moveWave = keyframes`
+  0% {
+    transform: translateX(0) translateZ(0) scaleY(1);
+  }
+
+  50% {
+    transform: translateX(-25%) translateZ(0) scaleY(0.55);
+  }
+
+  100% {
+    transform: translateX(-50%) translateZ(0) scaleY(1);
+  }
+`;
 
 const useStyles = makeStyles()((theme) => ({
   root: {
@@ -98,20 +113,20 @@ const useStyles = makeStyles()((theme) => ({
   waveTop: {
     zIndex: 18,
     opacity: 0.5,
-    animation: `$moveWave 60s linear alternate infinite`,
+    animation: `${moveWave} 60s linear alternate infinite`,
     transformOrigin: 'bottom center',
   },
   waveMiddle: {
     zIndex: 17,
     opacity: 0.6,
-    animation: `$moveWave 20s linear alternate infinite`,
+    animation: `${moveWave} 20s linear alternate infinite`,
     transformOrigin: 'bottom left',
   },
   waveBottom: {
     zIndex: 16,
     opacity: 0.7,
     width: '280%',
-    animation: `$moveWave 25s linear alternate infinite`,
+    animation: `${moveWave} 25s linear alternate infinite`,
     transformOrigin: 'bottom right',
   },
   svg: {
@@ -121,17 +136,6 @@ const useStyles = makeStyles()((theme) => ({
     height: 120,
     [theme.breakpoints.down('md')]: {
       height: 90,
-    },
-  },
-  '@keyframes moveWave': {
-    '0%': {
-      transform: 'translateX(0) translateZ(0) scaleY(1)',
-    },
-    '50%': {
-      transform: 'translateX(-25%) translateZ(0) scaleY(0.55)',
-    },
-    '100%': {
-      transform: 'translateX(-50%) translateZ(0) scaleY(1)',
     },
   },
 }));
