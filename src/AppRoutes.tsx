@@ -23,6 +23,7 @@ import News from 'pages/News';
 import NewsDetails from 'pages/NewsDetails';
 import NewStudent from 'pages/NewStudent';
 import Profile from 'pages/Profile';
+import CTF from 'pages/CTF';
 
 import Page from 'components/navigation/Page';
 
@@ -109,6 +110,7 @@ const AppRoutes = () => {
           <Route element={<Profile />} path=':userId/' />
         </Route>
 
+        <Route element={< CTF/>} path='/ctf' />
         <Route element={<AuthRoute element={<Cheatsheet />} />} path={`${URLS.cheatsheet}:studyId/:classId/`} />
         <Route element={<AuthRoute element={<Cheatsheet />} />} path={`${URLS.cheatsheet}*`} />
         <Route element={<AuthRoute element={<ShortLinks />} />} path={URLS.shortLinks} />

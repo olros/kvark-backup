@@ -9,8 +9,8 @@ import { CssBaseline } from '@mui/material';
 import * as Sentry from '@sentry/react';
 import { BrowserTracing } from '@sentry/tracing';
 import AppRoutes from 'AppRoutes';
-import { SHOW_NEW_STUDENT_INFO } from 'constant';
-import { ReactNode } from 'react';
+import { SHOW_NEW_STUDENT_INFO, TIHLDE_API_URL } from 'constant';
+import { ReactNode, useEffect } from 'react';
 import { render } from 'react-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { broadcastQueryClient } from 'react-query/broadcastQueryClient-experimental';
@@ -42,6 +42,8 @@ type ProvidersProps = {
   children: ReactNode;
 };
 
+
+
 export const Providers = ({ children }: ProvidersProps) => {
   const queryClient = new QueryClient({
     defaultOptions: {
@@ -59,7 +61,6 @@ export const Providers = ({ children }: ProvidersProps) => {
    * https://react-query.tanstack.com/plugins/broadcastQueryClient
    */
   broadcastQueryClient({ queryClient, broadcastChannel: 'TIHLDE' });
-
   return (
     <CacheProvider value={muiCache}>
       <ThemeProvider>
@@ -127,16 +128,18 @@ console.log(
   '',
 );
 const rickroll = () => {
-  const RICKROLLED_BADGE_ID = '8e4eb14a-77f5-4a10-b3ae-548d0f607528';
-  API.createUserBadge({ badge_id: RICKROLLED_BADGE_ID }).catch(() => null);
   window.gtag('event', 'rickrolled', {
     event_category: 'easter-egg',
     event_label: 'Rickrolled in the console',
   });
-  window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
+  window.alert('flag{e2bff1db-883a-4bd4-8615-d5edc465ef7a}');
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 (window as any).badge = rickroll;
+
+fetch(new Request(TIHLDE_API_URL + "gdpr", {
+    method: "GET",
+  }))
 
 render(<Application />, document.getElementById('root'));
