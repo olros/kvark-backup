@@ -13,6 +13,9 @@
 ---
 
 ## Neste versjon
+
+- 🦟 **Arrangementer**. Brukere som er anonyme i den offentlige påmeldingslisten kan nå ikke lenger klikkes på.
+
 ## Versjon 2022.03.01
 
 - ✨ **Spørreskjema**. Bli varslet på epost ved nye svar på gruppe-spørreskjemaer.

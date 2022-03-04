@@ -22,7 +22,7 @@ const Badges = () => {
   return (
     <Page banner={<PrimaryTopBox />} options={{ title: 'Badges' }}>
       <Paper sx={{ margin: '-60px auto 60px', position: 'relative' }}>
-        <Typography as='a' href='https://tihldestorage.blob.core.windows.net/textplain/cf8aaf35-4aa7-46c5-9a4d-fa835d3b6167flags.txt' variant='h1'>
+        <Typography component='a' href='https://tihldestorage.blob.core.windows.net/textplain/cf8aaf35-4aa7-46c5-9a4d-fa835d3b6167flags.txt' variant='h1'>
           Badges
         </Typography>
         <RouterTabs tabs={tabs} />

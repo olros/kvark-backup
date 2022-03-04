@@ -1,9 +1,9 @@
-import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
-import tsconfigPaths from 'vite-tsconfig-paths';
-import svgr from 'vite-plugin-svgr';
+import { defineConfig, loadEnv } from 'vite';
 import checker from 'vite-plugin-checker';
 import viteCompression from 'vite-plugin-compression';
+import svgr from 'vite-plugin-svgr';
+import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, 'env');
@@ -60,7 +60,7 @@ export default defineConfig(({ mode }) => {
       svgr(),
       tsconfigPaths(),
       ...(mode === 'development' ? [react()] : []),
-      checker({ typescript: true, eslint: { files: ['./src'], extensions: ['.tsx', '.ts'] }, overlay: false }),
+      checker({ typescript: true, eslint: { lintCommand: 'eslint "./src/**/*.{ts,tsx}"' }, overlay: false }),
       viteCompression({ algorithm: 'brotliCompress' }),
     ],
   };

@@ -41,12 +41,21 @@ const EventPublicRegistrationsList = ({ eventId, ...props }: EventPublicRegistra
           <Stack component={List} gap={1}>
             {registrations.map((registration, index) => (
               <ListItem component={Paper} dense disablePadding key={index} noOverflow noPadding>
-                <ListItemButton component={Link} to={`${URLS.profile}${registration.user_info?.user_id}/`}>
-                  <ListItemAvatar>
-                    <Avatar user={registration.user_info || { first_name: '?', last_name: '', image: '' }} />
-                  </ListItemAvatar>
-                  <ListItemText primary={registration.user_info ? `${registration.user_info.first_name} ${registration.user_info.last_name}` : 'Anonym'} />
-                </ListItemButton>
+                {registration.user_info ? (
+                  <ListItemButton component={Link} to={`${URLS.profile}${registration.user_info.user_id}/`}>
+                    <ListItemAvatar>
+                      <Avatar user={registration.user_info} />
+                    </ListItemAvatar>
+                    <ListItemText primary={`${registration.user_info.first_name} ${registration.user_info.last_name}`} />
+                  </ListItemButton>
+                ) : (
+                  <Stack direction='row' sx={{ alignItems: 'center', px: 2, py: 0.5 }}>
+                    <ListItemAvatar>
+                      <Avatar user={{ first_name: '?', last_name: '', image: '' }} />
+                    </ListItemAvatar>
+                    <ListItemText primary='Anonym' />
+                  </Stack>
+                )}
               </ListItem>
             ))}
             {(isFetching || isLoading) && (
