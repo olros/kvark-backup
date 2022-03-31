@@ -2,6 +2,8 @@ import CloseIcon from '@mui/icons-material/CloseRounded';
 import { Dialog, DialogContent, DialogTitle, IconButton, styled, Typography } from '@mui/material';
 import { forwardRef, useState } from 'react';
 import { FieldValues } from 'react-hook-form';
+import { createEditor } from 'slate';
+import { Editable, Slate, withReact } from 'slate-react';
 
 import TextField, { TextFieldProps } from 'components/inputs/TextField';
 import MarkdownRenderer from 'components/miscellaneous/MarkdownRenderer';
