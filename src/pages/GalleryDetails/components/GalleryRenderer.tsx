@@ -41,7 +41,11 @@ const GalleryRenderer = ({ id }: GalleryRendererProps) => {
       <Pagination fullWidth hasNextPage={hasNextPage} isLoading={isFetching} nextPage={() => fetchNextPage()}>
         <ImageList cols={mdDown ? 1 : lgUp ? 3 : 2} gap={8} variant='masonry'>
           {pictures.map((image) => (
-            <ImageListItem component='button' key={image.id} onClick={() => setSelectedImgId(image.id)} sx={{ cursor: 'pointer', border: 'none' }}>
+            <ImageListItem
+              component='button'
+              key={image.id}
+              onClick={() => setSelectedImgId(image.id)}
+              sx={{ cursor: 'pointer', borderRadius: '10px', border: 'none', overflow: 'hidden' }}>
               <img alt={image.image_alt} loading='lazy' src={image.image} />
             </ImageListItem>
           ))}

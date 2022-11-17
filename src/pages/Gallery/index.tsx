@@ -1,4 +1,4 @@
-import { styled } from '@mui/material';
+import { styled, TextField } from '@mui/material';
 import { useMemo } from 'react';
 
 import { PermissionApp } from 'types/Enums';
@@ -30,7 +30,7 @@ const GalleryGrid = styled('div')(({ theme }) => ({
 const Galleries = () => {
   const { data, error, hasNextPage, fetchNextPage, isLoading, isFetching } = useGalleries();
   const galleries = useMemo(() => (data ? data.pages.map((page) => page.results).flat() : []), [data]);
-
+  //const [input, setSearch] = useState('');
   return (
     <Page
       banner={
@@ -41,6 +41,9 @@ const Galleries = () => {
         </Banner>
       }
       options={{ title: 'Galleri' }}>
+      <Paper sx={{ mb: 2 }}>
+        <TextField id='outlined-basic' label='Søk etter galleri' variant='outlined'></TextField>
+      </Paper>
       <GalleryGrid>
         {isLoading && <GalleryListItemLoading />}
         {!isLoading && !galleries.length && <NotFoundIndicator header='Fant ingen galleri' />}
