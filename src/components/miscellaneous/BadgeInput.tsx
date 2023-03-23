@@ -11,10 +11,10 @@ export type BadgeInputProps = {
 };
 
 const BadgeInput = ({ flagCount, title, allBadgesFound = false }: BadgeInputProps) => {
-  const infoText = `Velkommen til TIHLDE ${title}. Vi i Index har er skjult ${flagCount} flagg rundt omkring på siden.`;
+  const infoText = `Velkommen til TIHLDE ${title}. Vi i Index har er skjult ${flagCount} flagg rundt omkring på siden. Kanskje noen på jubsiden?`;
 
   return (
-    <Paper sx={{ mx: 2 }}>
+    <Paper sx={{ mx: 2, mb: 4 }}>
       <Grid alignItems='center' container direction='column' justifyContent='center'>
         <Typography align='center' gutterBottom variant='h2'>
           {title}

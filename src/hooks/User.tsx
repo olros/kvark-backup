@@ -61,10 +61,10 @@ export const useUserPermissions = (options?: UseQueryOptions<UserPermissions | u
   );
 };
 
-export const useUserBadges = (userId?: User['user_id']) =>
+export const useUserBadges = (userId?: User['user_id'], filters?: any) =>
   useInfiniteQuery<PaginationResponse<Badge>, RequestResponse>(
     [USER_BADGES_QUERY_KEY, userId],
-    ({ pageParam = 1 }) => API.getUserBadges(userId, { page: pageParam }),
+    ({ pageParam = 1 }) => API.getUserBadges(userId, { page: pageParam, ...filters}),
     {
       getNextPageParam: (lastPage) => lastPage.next,
     },

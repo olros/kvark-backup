@@ -12,6 +12,7 @@ import StoriesView from 'pages/Landing/components/StoriesView';
 import Wave from 'pages/Landing/components/Wave';
 
 import Container from 'components/layout/Container';
+import BadgeInput from 'components/miscellaneous/BadgeInput';
 import Page from 'components/navigation/Page';
 
 const Section = styled(Container)(({ theme }) => ({
@@ -36,6 +37,7 @@ const Landing = () => {
       <Smoke>
         <Section maxWidth='lg' sx={{ px: { xs: 0, lg: 2 } }}>
           <NewStudentBox />
+          <BadgeInput allBadgesFound={false} flagCount={8} title='TIHLDE 30 ÅR - CTF' />
           <StoriesView />
         </Section>
       </Smoke>
