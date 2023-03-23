@@ -32,6 +32,7 @@ const Landing = () => {
   const openEventsAnalytics = () => event('go-to-all-events', 'events-list-view', `Go to all events`);
   const openNewsAnalytics = () => event('go-to-all-news', 'news-list-view', `Go to all news`);
 
+  console.log('ITS CTF TIME!!!');
   return (
     <Page banner={<Wave />} maxWidth={false} options={{ title: 'Forsiden' }}>
       <Smoke>
