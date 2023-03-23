@@ -37,7 +37,7 @@ const Landing = () => {
       <Smoke>
         <Section maxWidth='lg' sx={{ px: { xs: 0, lg: 2 } }}>
           <NewStudentBox />
-          <BadgeInput allBadgesFound={false} flagCount={8} title='TIHLDE 30 ÅR - CTF' />
+          <BadgeInput allBadgesFound={false} flagCount={7} title='TIHLDE 30 ÅR - CTF' />
           <StoriesView />
         </Section>
       </Smoke>
