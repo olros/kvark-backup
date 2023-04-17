@@ -1,3 +1,4 @@
+import { useAuth0 } from '@auth0/auth0-react';
 import OpenIcon from '@mui/icons-material/ArrowForwardRounded';
 import CloseIcon from '@mui/icons-material/CloseRounded';
 import OpenInNewIcon from '@mui/icons-material/OpenInNewRounded';
@@ -8,7 +9,7 @@ import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
 
-import { useIsAuthenticated, useUser } from 'hooks/User';
+import { useUser } from 'hooks/User';
 import { useAnalytics, usePersistedState } from 'hooks/Utils';
 
 const Box = styled('div')(({ theme }) => ({
@@ -21,7 +22,7 @@ const Box = styled('div')(({ theme }) => ({
 const NewStudentBox = () => {
   const { event } = useAnalytics();
   const { data: user, isLoading } = useUser();
-  const isAuthenticated = useIsAuthenticated();
+  const { isAuthenticated } = useAuth0();
   const [shouldShowBox, setShouldShowBox] = usePersistedState('ShowNewStudentBox', true, 1000 * 3600 * 24 * 60);
   const HEADER = {
     NEW_STUDENT: 'Nye studenter',

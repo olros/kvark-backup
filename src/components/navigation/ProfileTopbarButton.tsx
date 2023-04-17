@@ -1,3 +1,4 @@
+import { useAuth0 } from '@auth0/auth0-react';
 import PersonOutlineIcon from '@mui/icons-material/PersonRounded';
 import LightIcon from '@mui/icons-material/WbSunnyRounded';
 import { Button, IconButton, Theme, useTheme } from '@mui/material';
@@ -6,7 +7,6 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
 
-import { useSetRedirectUrl } from 'hooks/Misc';
 import { useUser } from 'hooks/User';
 import { useAnalytics } from 'hooks/Utils';
 
@@ -40,7 +40,7 @@ const ProfileTopbarButton = (props: ProfileTopbarButtonProps) => {
   const { classes } = useStyles(props);
   const { data: user } = useUser();
   const theme = useTheme();
-  const setLogInRedirectURL = useSetRedirectUrl();
+  const { loginWithRedirect } = useAuth0();
   const [showThemeSettings, setShowThemeSettings] = useState(false);
 
   const analytics = (page: string) => event(`go-to-${page}`, 'topbar-profile-button', `Go to ${page}`);
@@ -66,7 +66,7 @@ const ProfileTopbarButton = (props: ProfileTopbarButtonProps) => {
           className={classes.menuButton}
           component={Link}
           onClick={() => {
-            setLogInRedirectURL(window.location.pathname);
+            loginWithRedirect();
             analytics('log-in');
           }}
           to={URLS.login}>

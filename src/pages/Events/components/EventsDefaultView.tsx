@@ -1,3 +1,4 @@
+import { useAuth0 } from '@auth0/auth0-react';
 import { Button, Divider, MenuItem, Stack, Theme, useMediaQuery } from '@mui/material';
 import { makeStyles } from 'makeStyles';
 import { useCallback, useMemo, useState } from 'react';
@@ -7,7 +8,6 @@ import { argsToParams } from 'utils';
 
 import { useCategories } from 'hooks/Categories';
 import { useEvents } from 'hooks/Event';
-import { useIsAuthenticated } from 'hooks/User';
 import { useAnalytics } from 'hooks/Utils';
 
 import Bool from 'components/inputs/Bool';
@@ -63,7 +63,7 @@ type Filters = {
 };
 
 const EventsDefaultView = () => {
-  const isAuthenticated = useIsAuthenticated();
+  const { isAuthenticated } = useAuth0();
   const { event } = useAnalytics();
   const getInitialFilters = useCallback((): Filters => {
     const params = new URLSearchParams(location.search);

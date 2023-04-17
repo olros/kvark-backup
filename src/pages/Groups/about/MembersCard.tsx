@@ -1,3 +1,4 @@
+import { useAuth0 } from '@auth0/auth0-react';
 import { ListItem, ListItemAvatar, ListItemButton, ListItemText, Skeleton, Stack, Typography } from '@mui/material';
 import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
@@ -7,7 +8,6 @@ import { Group } from 'types';
 
 import { useGroup } from 'hooks/Group';
 import { useMemberships } from 'hooks/Membership';
-import { useIsAuthenticated } from 'hooks/User';
 
 import AddGroupMember from 'pages/Groups/about/AddGroupMember';
 import MembershipListItem from 'pages/Groups/about/MembershipListItem';
@@ -22,7 +22,7 @@ export type MembersCardProps = {
 };
 
 const MembersCard = ({ groupSlug }: MembersCardProps) => {
-  const isAuthenticated = useIsAuthenticated();
+  const { isAuthenticated } = useAuth0();
   const { data, hasNextPage, fetchNextPage, isLoading, isFetching } = useMemberships(groupSlug, { onlyMembers: true }, { enabled: isAuthenticated });
   const memberships = useMemo(() => (data !== undefined ? data.pages.map((page) => page.results).flat(1) : []), [data]);
   const { data: group } = useGroup(groupSlug);

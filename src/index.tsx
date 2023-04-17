@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 import 'assets/css/index.css';
 import 'delayed-scroll-restoration-polyfill';
+import { Auth0Provider } from '@auth0/auth0-react';
 import createCache from '@emotion/cache';
 import { CacheProvider } from '@emotion/react';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
@@ -9,7 +10,7 @@ import { CssBaseline } from '@mui/material';
 import { inject } from '@vercel/analytics';
 import { Analytics } from '@vercel/analytics/react';
 import AppRoutes from 'AppRoutes';
-import { SHOW_NEW_STUDENT_INFO } from 'constant';
+import { AUTH0_CLIENT_ID, AUTH0_DOMAIN, SHOW_NEW_STUDENT_INFO } from 'constant';
 import { ReactNode } from 'react';
 import { render } from 'react-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
@@ -48,19 +49,26 @@ export const Providers = ({ children }: { children: ReactNode }) => {
   broadcastQueryClient({ queryClient, broadcastChannel: 'TIHLDE' });
 
   return (
-    <CacheProvider value={muiCache}>
-      <ThemeProvider>
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <CssBaseline enableColorScheme />
-          <QueryClientProvider client={queryClient}>
-            <MiscProvider>
-              <SnackbarProvider>{children}</SnackbarProvider>
-            </MiscProvider>
-            <ReactQueryDevtools />
-          </QueryClientProvider>
-        </LocalizationProvider>
-      </ThemeProvider>
-    </CacheProvider>
+    <Auth0Provider
+      authorizationParams={{
+        redirect_uri: window.location.origin,
+      }}
+      clientId={AUTH0_CLIENT_ID}
+      domain={AUTH0_DOMAIN}>
+      <CacheProvider value={muiCache}>
+        <ThemeProvider>
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <CssBaseline enableColorScheme />
+            <QueryClientProvider client={queryClient}>
+              <MiscProvider>
+                <SnackbarProvider>{children}</SnackbarProvider>
+              </MiscProvider>
+              <ReactQueryDevtools />
+            </QueryClientProvider>
+          </LocalizationProvider>
+        </ThemeProvider>
+      </CacheProvider>
+    </Auth0Provider>
   );
 };
 

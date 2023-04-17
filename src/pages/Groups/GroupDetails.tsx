@@ -1,3 +1,4 @@
+import { useAuth0 } from '@auth0/auth0-react';
 import ArrowBackIcon from '@mui/icons-material/ArrowBackRounded';
 import LawIcon from '@mui/icons-material/GavelRounded';
 import FormsIcon from '@mui/icons-material/HelpOutlineRounded';
@@ -10,7 +11,6 @@ import { Link, Navigate, Route, Routes, useParams } from 'react-router-dom';
 import URLS from 'URLS';
 
 import { useGroup } from 'hooks/Group';
-import { useIsAuthenticated } from 'hooks/User';
 
 import GroupInfo from 'pages/Groups/about';
 import GroupAdmin from 'pages/Groups/components/GroupAdmin';
@@ -26,7 +26,7 @@ import { useSetNavigationOptions } from 'components/navigation/Navigation';
 
 const GroupDetails = () => {
   const { slug } = useParams<'slug'>();
-  const isAuthenticated = useIsAuthenticated();
+  const { isAuthenticated } = useAuth0();
   const { data, isLoading: isLoadingGroup, isError } = useGroup(slug || '-');
   useSetNavigationOptions({ title: `Gruppe - ${data?.name || 'Laster...'}` });
 

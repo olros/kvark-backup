@@ -6,6 +6,7 @@
     "node": ">=14.x"
   },
   "dependencies": {
+    "@auth0/auth0-react": "^2.0.1",
     "@devexpress/dx-react-core": "^3.0.0-beta.2",
     "@devexpress/dx-react-scheduler": "^3.0.0-beta.2",
     "@devexpress/dx-react-scheduler-material-ui": "^3.0.0-beta.2",

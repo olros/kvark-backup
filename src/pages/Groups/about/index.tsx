@@ -1,10 +1,11 @@
+import { useAuth0 } from '@auth0/auth0-react';
 import { Divider } from '@mui/material';
 import { useParams } from 'react-router-dom';
 
 import { PermissionApp } from 'types/Enums';
 
 import { useGroup } from 'hooks/Group';
-import { useHavePermission, useIsAuthenticated } from 'hooks/User';
+import { useHavePermission } from 'hooks/User';
 
 import MembersCard from 'pages/Groups/about/MembersCard';
 import MembersHistoryCard from 'pages/Groups/about/MembersHistoryCard';
@@ -15,7 +16,7 @@ import GroupStatistics from '../components/GroupStatistics';
 
 const GroupInfo = () => {
   const { allowAccess: isAdmin } = useHavePermission([PermissionApp.GROUP]);
-  const isAuthenticated = useIsAuthenticated();
+  const { isAuthenticated } = useAuth0();
   const { slug } = useParams<'slug'>();
   const { data: group, isLoading } = useGroup(slug || '-');
   if (isLoading || !group) {

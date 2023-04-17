@@ -1,3 +1,4 @@
+import { useAuth0 } from '@auth0/auth0-react';
 import SignupIcon from '@mui/icons-material/ArrowForwardRounded';
 import CalendarIcon from '@mui/icons-material/DateRangeRounded';
 import EventIcon from '@mui/icons-material/EventRounded';
@@ -15,7 +16,6 @@ import { Link } from 'react-router-dom';
 import URLS from 'URLS';
 
 import { useEvents } from 'hooks/Event';
-import { useIsAuthenticated } from 'hooks/User';
 import { useAnalytics } from 'hooks/Utils';
 import { useWikiPage } from 'hooks/Wiki';
 
@@ -68,7 +68,7 @@ const VolunteerGroup = ({ url, title }: VolunteerGroupProps) => {
 const NewStudent = () => {
   const { classes, cx } = useStyles();
   const { event } = useAnalytics();
-  const isAuthenticated = useIsAuthenticated();
+  const { isAuthenticated } = useAuth0();
   const eventsTab = { value: 'events', label: 'Fadderuka - arrangementer', icon: EventIcon };
   const faqTab = { value: 'faq', label: 'FAQ', icon: FaqIcon };
   const volunteerTab = { value: 'volunteer', label: 'Verv', icon: VolunteerIcon };

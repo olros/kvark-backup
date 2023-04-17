@@ -1,8 +1,7 @@
+import { useAuth0 } from '@auth0/auth0-react';
 import { Button, styled, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
-
-import { useIsAuthenticated } from 'hooks/User';
 
 import Page from 'components/navigation/Page';
 
@@ -27,7 +26,7 @@ export type Http404Props = {
 };
 
 const Http404 = ({ title = 'Kunne ikke finne siden' }: Http404Props) => {
-  const isAuthenticated = useIsAuthenticated();
+  const { isAuthenticated } = useAuth0();
 
   return (
     <Page options={{ filledTopbar: true, title: '404', lightColor: 'blue', gutterTop: true }}>

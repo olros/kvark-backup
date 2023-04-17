@@ -1,3 +1,4 @@
+import { useAuth0 } from '@auth0/auth0-react';
 import { ACCESS_TOKEN } from 'constant';
 import type { ReactNode } from 'react';
 import { QueryKey, useInfiniteQuery, useMutation, UseMutationResult, useQuery, useQueryClient, UseQueryOptions } from 'react-query';
@@ -24,7 +25,7 @@ import type {
 import type { PermissionApp } from 'types/Enums';
 
 import API from 'api/api';
-import { getCookie, removeCookie, setCookie } from 'api/cookie';
+import { removeCookie, setCookie } from 'api/cookie';
 
 export const USER_QUERY_KEY = 'user';
 export const USER_BADGES_QUERY_KEY = 'user_badges';
@@ -39,7 +40,7 @@ export const USER_NOTIFICATION_SETTING_CHOICES_QUERY_KEY = 'user_notification_se
 export const USERS_QUERY_KEY = 'users';
 
 export const useUser = (userId?: User['user_id'], options?: UseQueryOptions<User | undefined, RequestResponse, User | undefined, QueryKey>) => {
-  const isAuthenticated = useIsAuthenticated();
+  const { isAuthenticated } = useAuth0();
   const logOut = useLogout();
   return useQuery<User | undefined, RequestResponse>([USER_QUERY_KEY, userId], () => (isAuthenticated ? API.getUserData(userId) : undefined), {
     ...options,
@@ -53,7 +54,7 @@ export const useUser = (userId?: User['user_id'], options?: UseQueryOptions<User
 };
 
 export const useUserPermissions = (options?: UseQueryOptions<UserPermissions | undefined, RequestResponse, UserPermissions | undefined, QueryKey>) => {
-  const isAuthenticated = useIsAuthenticated();
+  const { isAuthenticated } = useAuth0();
   return useQuery<UserPermissions | undefined, RequestResponse>(
     [USER_PERMISSIONS_QUERY_KEY],
     () => (isAuthenticated ? API.getUserPermissions() : undefined),
@@ -154,8 +155,6 @@ export const useLogout = () => {
     navigate(URLS.landing);
   };
 };
-
-export const useIsAuthenticated = () => typeof getCookie(ACCESS_TOKEN) !== 'undefined';
 
 export const useCreateUser = (): UseMutationResult<RequestResponse, RequestResponse, UserCreate, unknown> => useMutation((user) => API.createUser(user));
 

@@ -1,3 +1,4 @@
+import { useAuth0 } from '@auth0/auth0-react';
 import { Alert, Snackbar as MaterialSnackbar, styled, Theme, useMediaQuery, useTheme } from '@mui/material';
 import { SHOW_NEW_STUDENT_INFO } from 'constant';
 import constate from 'constate';
@@ -7,7 +8,6 @@ import URLS from 'URLS';
 
 import { WarningType } from 'types/Enums';
 
-import { useIsAuthenticated } from 'hooks/User';
 import { useWarnings } from 'hooks/Warnings';
 
 import Linkify from 'components/miscellaneous/Linkify';
@@ -115,10 +115,10 @@ export type NavigationItem =
 
 const NavigationContent = ({ children }: NavigationProps) => {
   const { data: warnings = [], closeWarning } = useWarnings();
-  const isAuthenticated = useIsAuthenticated();
   const { title, darkColor, lightColor, filledTopbar, noFooter, gutterBottom, gutterTop } = useGetNavigationOptions();
   const lgDown = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'));
   const theme = useTheme();
+  const { isAuthenticated } = useAuth0();
 
   const items = useMemo<Array<NavigationItem>>(
     () => [

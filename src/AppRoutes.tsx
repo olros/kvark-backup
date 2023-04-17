@@ -7,7 +7,7 @@ import URLS from 'URLS';
 import { PermissionApp } from 'types/Enums';
 
 import { useSetRedirectUrl } from 'hooks/Misc';
-import { useHavePermission, useIsAuthenticated } from 'hooks/User';
+import { useHavePermission } from 'hooks/User';
 import { useAnalytics } from 'hooks/Utils';
 
 import Companies from 'pages/Companies';
@@ -26,6 +26,7 @@ import Profile from 'pages/Profile';
 import { SlackConnectPage } from 'pages/Profile/components/ProfileSettings/NotificationSettings';
 
 import Page from 'components/navigation/Page';
+import { useAuth0 } from '@auth0/auth0-react';
 
 const Gallery = lazy(() => import('pages/Gallery'));
 const GalleryDetails = lazy(() => import('pages/GalleryDetails'));
@@ -66,7 +67,7 @@ type AuthRouteProps = {
  */
 export const AuthRoute = ({ apps = [], element }: AuthRouteProps) => {
   const setLogInRedirectURL = useSetRedirectUrl();
-  const isAuthenticated = useIsAuthenticated();
+  const { isAuthenticated } = useAuth0();
   const { allowAccess, isLoading } = useHavePermission(apps, { enabled: Boolean(apps.length) });
 
   if (!isAuthenticated) {

@@ -1,3 +1,4 @@
+import { useAuth0 } from '@auth0/auth0-react';
 import { keyframes } from '@emotion/react';
 import SignupIcon from '@mui/icons-material/AddRounded';
 import LoginIcon from '@mui/icons-material/LoginRounded';
@@ -8,7 +9,6 @@ import { Link } from 'react-router-dom';
 import URLS from 'URLS';
 import { isAfterDateOfYear, isBeforeDateOfYear } from 'utils';
 
-import { useIsAuthenticated } from 'hooks/User';
 import { useAnalytics } from 'hooks/Utils';
 
 // import TihldeLogo from 'components/miscellaneous/TihldeLogo';
@@ -144,7 +144,8 @@ const useStyles = makeStyles()((theme) => ({
 const Wave = () => {
   const { classes, cx } = useStyles();
   const { event } = useAnalytics();
-  const isAuthenticated = useIsAuthenticated();
+
+  const { loginWithRedirect, isAuthenticated } = useAuth0();
 
   const analytics = (page: string) => event('go-to-page', 'wave', `Go to ${page}`);
 
@@ -176,10 +177,11 @@ const Wave = () => {
                 <Button
                   className={classes.contentButtonPrimary}
                   color='inherit'
-                  component={Link}
                   endIcon={<LoginIcon />}
-                  onClick={() => analytics('log-in')}
-                  to={URLS.login}
+                  onClick={() => {
+                    analytics('log-in');
+                    loginWithRedirect();
+                  }}
                   variant='contained'>
                   Logg inn
                 </Button>

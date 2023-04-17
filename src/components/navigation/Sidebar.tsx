@@ -11,10 +11,9 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import URLS from 'URLS';
 
-import { useIsAuthenticated } from 'hooks/User';
-
 import TihldeLogo from 'components/miscellaneous/TihldeLogo';
 import { NavigationItem } from 'components/navigation/Navigation';
+import { useAuth0 } from '@auth0/auth0-react';
 
 const useStyles = makeStyles()((theme) => ({
   sidebar: {
@@ -144,7 +143,7 @@ export type SidebarProps = {
 
 const Sidebar = ({ items, onClose, open }: SidebarProps) => {
   const { classes } = useStyles();
-  const isAuthenticated = useIsAuthenticated();
+  const { isAuthenticated } = useAuth0();
   const theme = useTheme();
   return (
     <Drawer anchor='bottom' classes={{ paper: classes.sidebar }} onClose={onClose} open={open} style={{ zIndex: theme.zIndex.drawer }}>

@@ -1,9 +1,9 @@
+import { useAuth0 } from '@auth0/auth0-react';
 import { Grid, Typography } from '@mui/material';
 
 import { GroupList } from 'types';
 
 import { useGroupsByType } from 'hooks/Group';
-import { useIsAuthenticated } from 'hooks/User';
 
 import GroupItem, { GroupItemLoading } from 'pages/Groups/overview/GroupItem';
 
@@ -12,7 +12,7 @@ import { useSetNavigationOptions } from 'components/navigation/Navigation';
 
 const GroupsOverview = () => {
   useSetNavigationOptions({ title: 'Gruppeoversikt' });
-  const isAuthenticated = useIsAuthenticated();
+  const { isAuthenticated } = useAuth0();
   const { BOARD_GROUPS, SUB_GROUPS, COMMITTEES, INTERESTGROUPS, OTHER_GROUPS, error, isLoading } = useGroupsByType({ overview: true });
 
   type CollectionProps = {
