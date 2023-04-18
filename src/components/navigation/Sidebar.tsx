@@ -1,3 +1,4 @@
+import { useAuth0 } from '@auth0/auth0-react';
 import CloseIcon from '@mui/icons-material/Close';
 import ExpandIcon from '@mui/icons-material/ExpandMoreRounded';
 import OpenInNewIcon from '@mui/icons-material/OpenInNewRounded';
@@ -13,7 +14,6 @@ import URLS from 'URLS';
 
 import TihldeLogo from 'components/miscellaneous/TihldeLogo';
 import { NavigationItem } from 'components/navigation/Navigation';
-import { useAuth0 } from '@auth0/auth0-react';
 
 const useStyles = makeStyles()((theme) => ({
   sidebar: {

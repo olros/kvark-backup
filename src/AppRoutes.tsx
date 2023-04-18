@@ -1,3 +1,4 @@
+import { useAuth0 } from '@auth0/auth0-react';
 import { PLAUSIBLE_DOMAIN } from 'constant';
 import Plausible from 'plausible-tracker';
 import { lazy, ReactElement, Suspense, useEffect } from 'react';
@@ -26,7 +27,6 @@ import Profile from 'pages/Profile';
 import { SlackConnectPage } from 'pages/Profile/components/ProfileSettings/NotificationSettings';
 
 import Page from 'components/navigation/Page';
-import { useAuth0 } from '@auth0/auth0-react';
 
 const Gallery = lazy(() => import('pages/Gallery'));
 const GalleryDetails = lazy(() => import('pages/GalleryDetails'));
