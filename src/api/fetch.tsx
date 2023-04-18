@@ -1,9 +1,8 @@
-import { ACCESS_TOKEN, TIHLDE_API_URL, TOKEN_HEADER_NAME } from 'constant';
+import { useAuth0 } from '@auth0/auth0-react';
+import { TIHLDE_API_URL } from 'constant';
 import { argsToParams } from 'utils';
 
 import { RequestResponse } from 'types';
-
-import { getCookie } from 'api/cookie';
 
 type RequestMethodType = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
@@ -16,15 +15,16 @@ type FetchProps = {
   file?: File | File[] | Blob;
 };
 
-export const IFetch = <T extends unknown>({ method, url, data = {}, withAuth = true, file }: FetchProps): Promise<T> => {
+export const IFetch = async <T extends unknown>({ method, url, data = {}, withAuth = true, file }: FetchProps): Promise<T> => {
   const urlAddress = TIHLDE_API_URL + url;
   const headers = new Headers();
   if (!file) {
     headers.append('Content-Type', 'application/json');
   }
 
+  const { getAccessTokenSilently } = useAuth0();
   if (withAuth) {
-    headers.append(TOKEN_HEADER_NAME, getCookie(ACCESS_TOKEN) as string);
+    headers.append('Authorization', `Bearer ${await getAccessTokenSilently()}`);
   }
 
   return fetch(request(method, urlAddress, headers, data, file)).then((response) => {
