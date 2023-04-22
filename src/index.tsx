@@ -10,7 +10,7 @@ import { CssBaseline } from '@mui/material';
 import { inject } from '@vercel/analytics';
 import { Analytics } from '@vercel/analytics/react';
 import AppRoutes from 'AppRoutes';
-import { AUTH0_CLIENT_ID, AUTH0_DOMAIN, SHOW_NEW_STUDENT_INFO } from 'constant';
+import { AUTH0_AUDIENCE, AUTH0_CLIENT_ID, AUTH0_DOMAIN, SHOW_NEW_STUDENT_INFO } from 'constant';
 import { ReactNode } from 'react';
 import { render } from 'react-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
@@ -52,6 +52,7 @@ export const Providers = ({ children }: { children: ReactNode }) => {
     <Auth0Provider
       authorizationParams={{
         redirect_uri: window.location.origin,
+        audience: AUTH0_AUDIENCE,
       }}
       clientId={AUTH0_CLIENT_ID}
       domain={AUTH0_DOMAIN}>

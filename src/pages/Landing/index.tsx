@@ -1,3 +1,4 @@
+// import { useAuth0 } from '@auth0/auth0-react';
 import ArrowIcon from '@mui/icons-material/ArrowForwardRounded';
 import { IconButton, styled, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
@@ -27,9 +28,12 @@ const Smoke = styled('div')(({ theme }) => ({
 }));
 
 const Landing = () => {
+  // const { getAccessTokenSilently } = useAuth0();
   const { event } = useAnalytics();
   const openEventsAnalytics = () => event('go-to-all-events', 'events-list-view', `Go to all events`);
   const openNewsAnalytics = () => event('go-to-all-news', 'news-list-view', `Go to all news`);
+
+  // getAccessTokenSilently().then((token) => console.log(token));
 
   return (
     <Page banner={<Wave />} maxWidth={false} options={{ title: 'Forsiden' }}>

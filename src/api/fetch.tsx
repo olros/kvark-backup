@@ -1,4 +1,3 @@
-import { useAuth0 } from '@auth0/auth0-react';
 import { TIHLDE_API_URL } from 'constant';
 import { argsToParams } from 'utils';
 
@@ -12,19 +11,19 @@ type FetchProps = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data?: Record<string, unknown | any>;
   withAuth?: boolean;
+  token?: string;
   file?: File | File[] | Blob;
 };
 
-export const IFetch = async <T extends unknown>({ method, url, data = {}, withAuth = true, file }: FetchProps): Promise<T> => {
+export const IFetch = async <T extends unknown>({ method, url, data = {}, withAuth = true, token, file }: FetchProps): Promise<T> => {
   const urlAddress = TIHLDE_API_URL + url;
   const headers = new Headers();
   if (!file) {
     headers.append('Content-Type', 'application/json');
   }
 
-  const { getAccessTokenSilently } = useAuth0();
   if (withAuth) {
-    headers.append('Authorization', `Bearer ${await getAccessTokenSilently()}`);
+    headers.append('Authorization', `Bearer ${token}`);
   }
 
   return fetch(request(method, urlAddress, headers, data, file)).then((response) => {

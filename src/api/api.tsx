@@ -99,15 +99,6 @@ export const WARNINGS_ENDPOINT = 'warnings';
 export default {
   // Auth
   createUser: (item: UserCreate) => IFetch<RequestResponse>({ method: 'POST', url: `${USERS_ENDPOINT}/`, data: item, withAuth: false }),
-  authenticate: (username: string, password: string) =>
-    IFetch<LoginRequestResponse>({
-      method: 'POST',
-      url: `${AUTH_ENDPOINT}/login/`,
-      data: { user_id: username, password: password },
-      withAuth: false,
-    }),
-  forgotPassword: (email: string) =>
-    IFetch<RequestResponse>({ method: 'POST', url: `${AUTH_ENDPOINT}/rest-auth/password/reset/`, data: { email: email }, withAuth: false }),
 
   // Events
   getEvent: (eventId: Event['id']) => IFetch<Event>({ method: 'GET', url: `${EVENTS_ENDPOINT}/${String(eventId)}/` }),
