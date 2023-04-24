@@ -1,3 +1,4 @@
+import { useAuth0 } from '@auth0/auth0-react';
 import AdminIcon from '@mui/icons-material/AdminPanelSettingsRounded';
 import EventIcon from '@mui/icons-material/DateRangeRounded';
 import BadgesIcon from '@mui/icons-material/EmojiEventsRounded';
@@ -29,7 +30,7 @@ import { getUserAffiliation } from 'utils';
 
 import { PermissionApp } from 'types/Enums';
 
-import { useHavePermission, useLogout, useUser } from 'hooks/User';
+import { useHavePermission, useUser } from 'hooks/User';
 import { useAnalytics } from 'hooks/Utils';
 
 import Http404 from 'pages/Http404';
@@ -62,7 +63,7 @@ const Profile = () => {
   const { userId } = useParams();
   const { data: user, isError } = useUser(userId);
   const { event } = useAnalytics();
-  const logOut = useLogout();
+  const { logout } = useAuth0();
   const { allowAccess: isAdmin } = useHavePermission([
     PermissionApp.EVENT,
     PermissionApp.JOBPOST,
@@ -72,11 +73,6 @@ const Profile = () => {
     PermissionApp.GROUP,
   ]);
 
-  const logout = () => {
-    event('log-out', 'profile', 'Logged out');
-    logOut();
-  };
-
   const eventTab: NavListItem = { label: 'Arrangementer', icon: EventIcon };
   const badgesTab: NavListItem = { label: 'Badges', icon: BadgesIcon };
   const groupsTab: NavListItem = { label: 'Medlemskap', icon: GroupsIcon };
@@ -84,7 +80,12 @@ const Profile = () => {
   const settingsTab: NavListItem = { label: 'Innstillinger', icon: SettingsIcon };
   const adminTab: NavListItem = { label: 'Admin', icon: AdminIcon };
   const strikesTab: NavListItem = { label: 'Prikker', icon: WorkspacesIcon };
-  const logoutTab: NavListItem = { label: 'Logg ut', icon: LogOutIcon, onClick: logout, iconProps: { sx: { color: (theme) => theme.palette.error.main } } };
+  const logoutTab: NavListItem = {
+    label: 'Logg ut',
+    icon: LogOutIcon,
+    onClick: () => logout(),
+    iconProps: { sx: { color: (theme) => theme.palette.error.main } },
+  };
   const tabs: Array<NavListItem> = userId
     ? [badgesTab, groupsTab]
     : [eventTab, badgesTab, groupsTab, strikesTab, formsTab, settingsTab, ...(isAdmin ? [adminTab] : [])];

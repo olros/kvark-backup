@@ -35,7 +35,6 @@ import {
   GroupUserFine,
   JobPost,
   JobPostRequired,
-  LoginRequestResponse,
   Membership,
   MembershipHistory,
   MembershipHistoryMutate,
@@ -53,7 +52,6 @@ import {
   StrikeList,
   Submission,
   User,
-  UserCreate,
   UserNotificationSetting,
   UserNotificationSettingChoice,
   UserPermissions,
@@ -97,9 +95,6 @@ export const USERS_ENDPOINT = 'users';
 export const WARNINGS_ENDPOINT = 'warnings';
 
 export default {
-  // Auth
-  createUser: (item: UserCreate) => IFetch<RequestResponse>({ method: 'POST', url: `${USERS_ENDPOINT}/`, data: item, withAuth: false }),
-
   // Events
   getEvent: (eventId: Event['id']) => IFetch<Event>({ method: 'GET', url: `${EVENTS_ENDPOINT}/${String(eventId)}/` }),
   getEventStatistics: (eventId: Event['id']) => IFetch<EventStatistics>({ method: 'GET', url: `${EVENTS_ENDPOINT}/${String(eventId)}/statistics/` }),

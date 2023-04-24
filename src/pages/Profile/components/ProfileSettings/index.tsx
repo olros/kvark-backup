@@ -8,7 +8,7 @@ import { Button, Stack, Typography } from '@mui/material';
 import { User } from 'types';
 
 import { useSnackbar } from 'hooks/Snackbar';
-import { useExportUserData, useForgotPassword } from 'hooks/User';
+import { useExportUserData } from 'hooks/User';
 import { useAnalytics } from 'hooks/Utils';
 
 import UserNotificationSettings, { ConnectWithSlack } from 'pages/Profile/components/ProfileSettings/NotificationSettings';
@@ -24,7 +24,6 @@ export type ProfileSettingsProps = {
 const ProfileSettings = ({ user }: ProfileSettingsProps) => {
   const { event } = useAnalytics();
   const showSnackbar = useSnackbar();
-  const forgotPassword = useForgotPassword();
   const exportUserData = useExportUserData();
   const runExportUserdata = () =>
     exportUserData.mutate(undefined, {
@@ -34,13 +33,6 @@ const ProfileSettings = ({ user }: ProfileSettingsProps) => {
       },
       onError: (e) => showSnackbar(e.detail, 'error'),
     });
-
-  const resetPassword = () => {
-    forgotPassword.mutate(user.email, {
-      onSuccess: () => showSnackbar('Vi har sendt deg en epost med link til en side der du kan endre passordet ditt', 'success'),
-      onError: (e) => showSnackbar(e.detail, 'error'),
-    });
-  };
 
   return (
     <Stack gap={1}>
@@ -52,9 +44,9 @@ const ProfileSettings = ({ user }: ProfileSettingsProps) => {
         <UserSettings user={user} />
       </StandaloneExpand>
       <StandaloneExpand icon={<PasswordIcon />} primary='Endre passord' secondary='Motta en link i din epost til side der du kan endre passord'>
-        <Button disabled={forgotPassword.isLoading} fullWidth onClick={resetPassword} variant='outlined'>
+        {/*<Button disabled={forgotPassword.isLoading} fullWidth onClick={resetPassword} variant='outlined'>
           Endre passord
-        </Button>
+        </Button>*/}
       </StandaloneExpand>
       <StandaloneExpand icon={<ExportIcon />} primary='Eksporter brukerdata' secondary='Få tilsendt alle data vi har lagret i tilknytning til din bruker'>
         <Button disabled={exportUserData.isLoading} fullWidth onClick={runExportUserdata} variant='outlined'>

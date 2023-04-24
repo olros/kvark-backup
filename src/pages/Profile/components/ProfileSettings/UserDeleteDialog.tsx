@@ -1,10 +1,11 @@
+import { useAuth0 } from '@auth0/auth0-react';
 import { Button } from '@mui/material';
 import { useForm } from 'react-hook-form';
 
 import { User } from 'types';
 
 import { useSnackbar } from 'hooks/Snackbar';
-import { useDeleteUser, useLogout } from 'hooks/User';
+import { useDeleteUser } from 'hooks/User';
 import { useAnalytics } from 'hooks/Utils';
 
 import TextField from 'components/inputs/TextField';
@@ -17,8 +18,8 @@ export type UserDeleteDialogProps = {
 
 export const UserDeleteDialog = ({ isAdmin, user }: UserDeleteDialogProps) => {
   const { event } = useAnalytics();
+  const { logout } = useAuth0();
   const deleteUser = useDeleteUser();
-  const logOut = useLogout();
   const showSnackbar = useSnackbar();
   const { register, formState, watch } = useForm<Pick<User, 'user_id'>>();
   const writtenUserId = watch('user_id');
@@ -28,7 +29,7 @@ export const UserDeleteDialog = ({ isAdmin, user }: UserDeleteDialogProps) => {
       onSuccess: (data) => {
         showSnackbar(data.detail, 'success');
         event('delete-user', 'profile', 'Deleted user');
-        logOut();
+        logout();
       },
       onError: (e) => showSnackbar(e.detail, 'error'),
     });

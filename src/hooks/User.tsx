@@ -1,22 +1,17 @@
 import { useAuth0 } from '@auth0/auth0-react';
-import { ACCESS_TOKEN } from 'constant';
 import type { ReactNode } from 'react';
 import { QueryKey, useInfiniteQuery, useMutation, UseMutationResult, useQuery, useQueryClient, UseQueryOptions } from 'react-query';
-import { useNavigate } from 'react-router-dom';
-import URLS from 'URLS';
 
 import type {
   Badge,
   EventList,
   Form,
-  LoginRequestResponse,
   Membership,
   MembershipHistory,
   PaginationResponse,
   RequestResponse,
   Strike,
   User,
-  UserCreate,
   UserList,
   UserNotificationSetting,
   UserNotificationSettingChoice,
@@ -25,7 +20,6 @@ import type {
 import type { PermissionApp } from 'types/Enums';
 
 import API from 'api/api';
-import { removeCookie, setCookie } from 'api/cookie';
 
 export const USER_QUERY_KEY = 'user';
 export const USER_BADGES_QUERY_KEY = 'user_badges';
@@ -40,13 +34,12 @@ export const USER_NOTIFICATION_SETTING_CHOICES_QUERY_KEY = 'user_notification_se
 export const USERS_QUERY_KEY = 'users';
 
 export const useUser = (userId?: User['user_id'], options?: UseQueryOptions<User | undefined, RequestResponse, User | undefined, QueryKey>) => {
-  const { isAuthenticated } = useAuth0();
-  const logOut = useLogout();
+  const { isAuthenticated, logout } = useAuth0();
   return useQuery<User | undefined, RequestResponse>([USER_QUERY_KEY, userId], () => (isAuthenticated ? API.getUserData(userId) : undefined), {
     ...options,
     onError: () => {
       if (!userId) {
-        logOut();
+        logout();
         window.location.reload();
       }
     },
@@ -132,31 +125,6 @@ export const useUsers = (filters?: any) =>
       getNextPageParam: (lastPage) => lastPage.next,
     },
   );
-
-export const useLogin = (): UseMutationResult<LoginRequestResponse, RequestResponse, { username: string; password: string }, unknown> => {
-  const queryClient = useQueryClient();
-  return useMutation(({ username, password }) => API.authenticate(username, password), {
-    onSuccess: (data) => {
-      setCookie(ACCESS_TOKEN, data.token);
-      queryClient.removeQueries();
-      queryClient.prefetchQuery([USER_QUERY_KEY], () => API.getUserData());
-    },
-  });
-};
-
-export const useForgotPassword = (): UseMutationResult<RequestResponse, RequestResponse, string, unknown> => useMutation((email) => API.forgotPassword(email));
-
-export const useLogout = () => {
-  const navigate = useNavigate();
-  const queryClient = useQueryClient();
-  return () => {
-    removeCookie(ACCESS_TOKEN);
-    queryClient.removeQueries();
-    navigate(URLS.landing);
-  };
-};
-
-export const useCreateUser = (): UseMutationResult<RequestResponse, RequestResponse, UserCreate, unknown> => useMutation((user) => API.createUser(user));
 
 export const useUpdateUser = (): UseMutationResult<User, RequestResponse, { userId: string; user: Partial<User> }, unknown> => {
   const queryClient = useQueryClient();

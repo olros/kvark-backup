@@ -41,16 +41,13 @@ const BadgesCategoryLeaderboard = lazy(() => import('pages/Badges/category/Badge
 const Cheatsheet = lazy(() => import('pages/Cheatsheet'));
 const EventAdministration = lazy(() => import('pages/EventAdministration'));
 const EventRegistration = lazy(() => import('pages/EventRegistration'));
-const ForgotPassword = lazy(() => import('pages/ForgotPassword'));
 const Form = lazy(() => import('pages/Form'));
 const FormAdmin = lazy(() => import('pages/Form/FormAdmin'));
 const Http404 = lazy(() => import('pages/Http404'));
 const JobPostAdministration = lazy(() => import('pages/JobPostAdministration'));
-const LogIn = lazy(() => import('pages/LogIn'));
 const NewsAdministration = lazy(() => import('pages/NewsAdministration'));
 const Wiki = lazy(() => import('pages/Wiki'));
 const ShortLinks = lazy(() => import('pages/ShortLinks'));
-const SignUp = lazy(() => import('pages/SignUp'));
 const StrikeAdmin = lazy(() => import('pages/StrikeAdmin'));
 const Toddel = lazy(() => import('pages/Toddel'));
 const UserAdmin = lazy(() => import('pages/UserAdmin'));
@@ -171,10 +168,6 @@ const AppRoutes = () => {
         </Route>
         <Route element={<AuthRoute apps={[PermissionApp.USER]} element={<UserAdmin />} />} path={URLS.userAdmin} />
         <Route element={<AuthRoute apps={[PermissionApp.STRIKE]} element={<StrikeAdmin />} />} path={URLS.strikeAdmin} />
-
-        <Route element={<LogIn />} path={URLS.login} />
-        <Route element={<ForgotPassword />} path={URLS.forgotPassword} />
-        <Route element={<SignUp />} path={URLS.signup} />
 
         <Route element={<Http404 />} path='*' />
       </Routes>
