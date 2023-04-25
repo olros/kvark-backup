@@ -1,4 +1,3 @@
-import { useAuth0 } from '@auth0/auth0-react';
 import { PLAUSIBLE_DOMAIN } from 'constant';
 import Plausible from 'plausible-tracker';
 import { lazy, ReactElement, Suspense, useEffect } from 'react';
@@ -7,7 +6,6 @@ import URLS from 'URLS';
 
 import { PermissionApp } from 'types/Enums';
 
-import { useSetRedirectUrl } from 'hooks/Misc';
 import { useHavePermission } from 'hooks/User';
 import { useAnalytics } from 'hooks/Utils';
 
@@ -63,14 +61,15 @@ type AuthRouteProps = {
  * Protects a route with permission checks. If `apps` is empty or not present, all authenticated users are given access.
  */
 export const AuthRoute = ({ apps = [], element }: AuthRouteProps) => {
-  const setLogInRedirectURL = useSetRedirectUrl();
-  const { isAuthenticated } = useAuth0();
   const { allowAccess, isLoading } = useHavePermission(apps, { enabled: Boolean(apps.length) });
 
+  /*
+  TODO: Handle automatic login if not authenticated
   if (!isAuthenticated) {
     setLogInRedirectURL(window.location.pathname);
     return <Navigate to={URLS.login} />;
   }
+  */
   if (!apps.length) {
     return element;
   }

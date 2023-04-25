@@ -6,8 +6,7 @@ import { useForm } from 'react-hook-form';
 
 import { CompaniesEmail } from 'types';
 
-import API from 'api/api';
-
+import { useAPI } from 'hooks/API';
 import { useSnackbar } from 'hooks/Snackbar';
 import { useAnalytics } from 'hooks/Utils';
 
@@ -26,6 +25,7 @@ const CompaniesForm = () => {
   const showSnackbar = useSnackbar();
   const [isLoading, setIsLoading] = useState(false);
   const { register, control, handleSubmit, formState, getValues, reset, setError } = useForm<CompaniesEmailFormValues>();
+  const { emailForm } = useAPI();
 
   const submitForm = async (data: CompaniesEmailFormValues) => {
     if (isLoading) {
@@ -38,7 +38,7 @@ const CompaniesForm = () => {
         time: data.time.map((t) => t.label),
         type: data.type.map((t) => t.label),
       };
-      const response = await API.emailForm(companyData);
+      const response = await emailForm(companyData);
       event('submit-form', 'companies', `Company: ${data.info.bedrift}`);
       showSnackbar(response.detail, 'success');
       reset({ info: { bedrift: '', kontaktperson: '', epost: '' }, comment: '', time: [], type: [] } as CompaniesEmailFormValues);

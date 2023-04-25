@@ -28,12 +28,13 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getUserAffiliation } from 'utils';
 
+import { User } from 'types';
 import { PermissionApp } from 'types/Enums';
 
-import { useHavePermission, useUser } from 'hooks/User';
+import { useAPI } from 'hooks/API';
+import { useHavePermission } from 'hooks/User';
 import { useAnalytics } from 'hooks/Utils';
 
-import Http404 from 'pages/Http404';
 import ProfileAdmin from 'pages/Profile/components/ProfileAdmin';
 import ProfileBadges from 'pages/Profile/components/ProfileBadges';
 import ProfileEvents from 'pages/Profile/components/ProfileEvents';
@@ -61,9 +62,16 @@ const Content = styled('div')(({ theme }) => ({
 
 const Profile = () => {
   const { userId } = useParams();
-  const { data: user, isError } = useUser(userId);
   const { event } = useAnalytics();
   const { logout } = useAuth0();
+  const { getUserData } = useAPI();
+
+  const [user, setUser] = useState<User | undefined>();
+
+  useEffect(() => {
+    getUserData().then((u) => setUser(u));
+  }, []);
+
   const { allowAccess: isAdmin } = useHavePermission([
     PermissionApp.EVENT,
     PermissionApp.JOBPOST,
@@ -118,10 +126,6 @@ const Profile = () => {
       </ListItemButton>
     </ListItem>
   );
-
-  if (isError) {
-    return <Http404 title='Kunne ikke finne brukeren' />;
-  }
 
   return (
     <Page options={{ title: 'Profil', gutterTop: true, lightColor: 'blue' }}>

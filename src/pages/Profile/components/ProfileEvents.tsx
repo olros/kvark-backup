@@ -3,8 +3,7 @@ import { Alert, Stack, Typography } from '@mui/material';
 import { TIHLDE_API_URL } from 'constant';
 import { useMemo } from 'react';
 
-import { USERS_ENDPOINT } from 'api/api';
-
+import { USERS_ENDPOINT } from 'hooks/API';
 import { useUser, useUserEvents } from 'hooks/User';
 
 import { StandaloneExpand } from 'components/layout/Expand';

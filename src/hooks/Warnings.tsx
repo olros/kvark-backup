@@ -1,11 +1,11 @@
 import { WARNINGS_READ } from 'constant';
+import { getCookie, setCookie } from 'cookie';
 import { useCallback, useMemo, useState } from 'react';
 import { useQuery } from 'react-query';
 
 import { RequestResponse, Warning } from 'types';
 
-import API from 'api/api';
-import { getCookie, setCookie } from 'api/cookie';
+import { useAPI } from './API';
 
 export const WARNINGS_QUERY_KEY = 'warnings';
 
@@ -15,7 +15,8 @@ const getReadWarnings = () => {
 };
 
 export const useWarnings = () => {
-  const { data, ...result } = useQuery<Array<Warning>, RequestResponse>([WARNINGS_QUERY_KEY], () => API.getWarnings());
+  const { getWarnings } = useAPI();
+  const { data, ...result } = useQuery<Array<Warning>, RequestResponse>([WARNINGS_QUERY_KEY], () => getWarnings());
   const [readWarnings, setReadWarnings] = useState(getReadWarnings());
   const warnings = useMemo(() => (data ? data.filter((warning) => !readWarnings.includes(warning.id)) : data), [data, readWarnings]);
 

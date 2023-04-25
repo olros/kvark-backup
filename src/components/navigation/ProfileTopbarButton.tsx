@@ -64,12 +64,10 @@ const ProfileTopbarButton = (props: ProfileTopbarButtonProps) => {
         <IconButton
           aria-label='Logg inn'
           className={classes.menuButton}
-          component={Link}
           onClick={() => {
             loginWithRedirect();
             analytics('log-in');
-          }}
-          to={URLS.login}>
+          }}>
           <PersonOutlineIcon />
         </IconButton>
       )}

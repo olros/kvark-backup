@@ -18,8 +18,7 @@ import { broadcastQueryClient } from 'react-query/broadcastQueryClient-experimen
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { BrowserRouter } from 'react-router-dom';
 
-import API from 'api/api';
-
+import { useAPI } from 'hooks/API';
 import { MiscProvider } from 'hooks/Misc';
 import { SnackbarProvider } from 'hooks/Snackbar';
 import { ThemeProvider } from 'hooks/Theme';
@@ -105,9 +104,11 @@ console.log(
   'background-color: #121212;font-family: "Monaco", monospace;padding: 2px; color: white;',
   '',
 );
+
 const rickroll = () => {
-  const RICKROLLED_BADGE_ID = '372e3278-3d8f-4c0e-a83a-f693804f8cbb';
-  API.createUserBadge({ flag: RICKROLLED_BADGE_ID }).catch(() => null);
+  // TODO: This got broken when transitioning to auth0 hooks
+  // const RICKROLLED_BADGE_ID = '372e3278-3d8f-4c0e-a83a-f693804f8cbb';
+  // createUserBadge({ flag: RICKROLLED_BADGE_ID });
   window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ');
 };
 

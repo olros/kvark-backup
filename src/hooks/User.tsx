@@ -19,7 +19,7 @@ import type {
 } from 'types';
 import type { PermissionApp } from 'types/Enums';
 
-import API from 'api/api';
+import { useAPI } from './API';
 
 export const USER_QUERY_KEY = 'user';
 export const USER_BADGES_QUERY_KEY = 'user_badges';
@@ -35,7 +35,8 @@ export const USERS_QUERY_KEY = 'users';
 
 export const useUser = (userId?: User['user_id'], options?: UseQueryOptions<User | undefined, RequestResponse, User | undefined, QueryKey>) => {
   const { isAuthenticated, logout } = useAuth0();
-  return useQuery<User | undefined, RequestResponse>([USER_QUERY_KEY, userId], () => (isAuthenticated ? API.getUserData(userId) : undefined), {
+  const { getUserData } = useAPI();
+  return useQuery<User | undefined, RequestResponse>([USER_QUERY_KEY, userId], () => (isAuthenticated ? getUserData(userId) : undefined), {
     ...options,
     onError: () => {
       if (!userId) {
@@ -48,26 +49,30 @@ export const useUser = (userId?: User['user_id'], options?: UseQueryOptions<User
 
 export const useUserPermissions = (options?: UseQueryOptions<UserPermissions | undefined, RequestResponse, UserPermissions | undefined, QueryKey>) => {
   const { isAuthenticated } = useAuth0();
+  const { getUserPermissions } = useAPI();
   return useQuery<UserPermissions | undefined, RequestResponse>(
     [USER_PERMISSIONS_QUERY_KEY],
-    () => (isAuthenticated ? API.getUserPermissions() : undefined),
+    () => (isAuthenticated ? getUserPermissions() : undefined),
     options,
   );
 };
 
-export const useUserBadges = (userId?: User['user_id']) =>
-  useInfiniteQuery<PaginationResponse<Badge>, RequestResponse>(
+export const useUserBadges = (userId?: User['user_id']) => {
+  const { getUserBadges } = useAPI();
+  return useInfiniteQuery<PaginationResponse<Badge>, RequestResponse>(
     [USER_BADGES_QUERY_KEY, userId],
-    ({ pageParam = 1 }) => API.getUserBadges(userId, { page: pageParam }),
+    ({ pageParam = 1 }) => getUserBadges(userId, { page: pageParam }),
     {
       getNextPageParam: (lastPage) => lastPage.next,
     },
   );
+};
 
 export const useUserEvents = (userId?: User['user_id']) => {
+  const { getUserEvents } = useAPI();
   return useInfiniteQuery<PaginationResponse<EventList>, RequestResponse>(
     [USER_EVENTS_QUERY_KEY, userId],
-    ({ pageParam = 1 }) => API.getUserEvents(userId, { page: pageParam }),
+    ({ pageParam = 1 }) => getUserEvents(userId, { page: pageParam }),
     {
       getNextPageParam: (lastPage) => lastPage.next,
     },
@@ -75,14 +80,16 @@ export const useUserEvents = (userId?: User['user_id']) => {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const useUserForms = (filters?: any) =>
+export const useUserForms = (filters?: any) => {
+  const { getUserForms } = useAPI();
   useInfiniteQuery<PaginationResponse<Form>, RequestResponse>(
     [USER_FORMS_QUERY_KEY, filters],
-    ({ pageParam = 1 }) => API.getUserForms({ ...filters, page: pageParam }),
+    ({ pageParam = 1 }) => getUserForms({ ...filters, page: pageParam }),
     {
       getNextPageParam: (lastPage) => lastPage.next,
     },
   );
+};
 
 export const useUserMemberships = (userId?: User['user_id']) =>
   useInfiniteQuery<PaginationResponse<Membership>, RequestResponse>([USER_MEMBERSHIPS_QUERY_KEY, userId], () => API.getUserMemberships(userId));

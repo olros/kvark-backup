@@ -20,6 +20,7 @@ import {
   Typography,
 } from '@mui/material';
 import { ACCESS_TOKEN, TIHLDE_API_URL, TOKEN_HEADER_NAME } from 'constant';
+import { getCookie } from 'cookie';
 import { useState } from 'react';
 import { urlEncode } from 'utils';
 
@@ -27,7 +28,6 @@ import { SelectFieldSubmission, SelectFormField, TextFieldSubmission, TextFormFi
 import { FormFieldType, FormResourceType } from 'types/Enums';
 
 import { FORMS_ENDPOINT, SUBMISSIONS_ENDPOINT } from 'api/api';
-import { getCookie } from 'api/cookie';
 
 import { useFormById, useFormSubmissions } from 'hooks/Form';
 import { useSnackbar } from 'hooks/Snackbar';

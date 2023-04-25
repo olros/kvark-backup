@@ -1,9 +1,8 @@
 import { useMediaQuery } from '@mui/material';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material/styles';
 import { SELECTED_THEME } from 'constant';
+import { getCookie, setCookie } from 'cookie';
 import { createContext, ReactNode, useCallback, useContext, useLayoutEffect, useState } from 'react';
-
-import { getCookie, setCookie } from 'api/cookie';
 
 import { getTheme, themes, ThemeTypes } from '../theme';
 

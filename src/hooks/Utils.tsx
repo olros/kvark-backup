@@ -1,8 +1,7 @@
 import { PLAUSIBLE_DOMAIN } from 'constant';
+import { getCookie, setCookie } from 'cookie';
 import Plausible from 'plausible-tracker';
 import { EffectCallback, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-
-import { getCookie, setCookie } from 'api/cookie';
 
 import { useSnackbar } from 'hooks/Snackbar';
 
