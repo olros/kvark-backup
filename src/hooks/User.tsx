@@ -19,7 +19,7 @@ import type {
 } from 'types';
 import type { PermissionApp } from 'types/Enums';
 
-import { useAPI } from './API';
+import { useAPI } from 'hooks/API';
 
 export const USER_QUERY_KEY = 'user';
 export const USER_BADGES_QUERY_KEY = 'user_badges';
@@ -82,7 +82,7 @@ export const useUserEvents = (userId?: User['user_id']) => {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const useUserForms = (filters?: any) => {
   const { getUserForms } = useAPI();
-  useInfiniteQuery<PaginationResponse<Form>, RequestResponse>(
+  return useInfiniteQuery<PaginationResponse<Form>, RequestResponse>(
     [USER_FORMS_QUERY_KEY, filters],
     ({ pageParam = 1 }) => getUserForms({ ...filters, page: pageParam }),
     {
@@ -91,25 +91,39 @@ export const useUserForms = (filters?: any) => {
   );
 };
 
-export const useUserMemberships = (userId?: User['user_id']) =>
-  useInfiniteQuery<PaginationResponse<Membership>, RequestResponse>([USER_MEMBERSHIPS_QUERY_KEY, userId], () => API.getUserMemberships(userId));
+export const useUserMemberships = (userId?: User['user_id']) => {
+  const { getUserMemberships } = useAPI();
+  return useInfiniteQuery<PaginationResponse<Membership>, RequestResponse>([USER_MEMBERSHIPS_QUERY_KEY, userId], () => getUserMemberships(userId));
+};
 
-export const useUserMembershipHistories = (userId?: User['user_id']) =>
-  useInfiniteQuery<PaginationResponse<MembershipHistory>, RequestResponse>([USER_MEMBERSHIP_HISTORIES_QUERY_KEY, userId], () =>
-    API.getUserMembershipHistories(userId),
+export const useUserMembershipHistories = (userId?: User['user_id']) => {
+  const { getUserMembershipHistories } = useAPI();
+  return useInfiniteQuery<PaginationResponse<MembershipHistory>, RequestResponse>([USER_MEMBERSHIP_HISTORIES_QUERY_KEY, userId], () =>
+    getUserMembershipHistories(userId),
   );
+};
 
-export const useUserStrikes = (userId?: string) => useQuery<Array<Strike>, RequestResponse>([USER_STRIKES_QUERY_KEY, userId], () => API.getUserStrikes(userId));
+export const useUserStrikes = (userId?: string) => {
+  const { getUserStrikes } = useAPI();
+  return useQuery<Array<Strike>, RequestResponse>([USER_STRIKES_QUERY_KEY, userId], () => getUserStrikes(userId));
+};
 
-export const useUserNotificationSettings = () =>
-  useQuery<Array<UserNotificationSetting>, RequestResponse>([USER_NOTIFICATION_SETTINGS_QUERY_KEY], () => API.getUserNotificationSettings());
+export const useUserNotificationSettings = () => {
+  const { getUserNotificationSettings } = useAPI();
+  return useQuery<Array<UserNotificationSetting>, RequestResponse>([USER_NOTIFICATION_SETTINGS_QUERY_KEY], () => getUserNotificationSettings());
+};
 
-export const useUserNotificationSettingChoices = () =>
-  useQuery<Array<UserNotificationSettingChoice>, RequestResponse>([USER_NOTIFICATION_SETTING_CHOICES_QUERY_KEY], () => API.getUserNotificationSettingChoices());
+export const useUserNotificationSettingChoices = () => {
+  const { getUserNotificationSettingChoices } = useAPI();
+  return useQuery<Array<UserNotificationSettingChoice>, RequestResponse>([USER_NOTIFICATION_SETTING_CHOICES_QUERY_KEY], () =>
+    getUserNotificationSettingChoices(),
+  );
+};
 
 export const useUpdateUserNotificationSettings = (): UseMutationResult<Array<UserNotificationSetting>, RequestResponse, UserNotificationSetting, unknown> => {
+  const { updateUserNotificationSettings } = useAPI();
   const queryClient = useQueryClient();
-  return useMutation((data) => API.updateUserNotificationSettings(data), {
+  return useMutation((data) => updateUserNotificationSettings(data), {
     onSuccess: (data) => {
       queryClient.setQueryData([USER_NOTIFICATION_SETTINGS_QUERY_KEY], data);
     },
@@ -117,25 +131,29 @@ export const useUpdateUserNotificationSettings = (): UseMutationResult<Array<Use
 };
 
 export const useSlackConnect = (): UseMutationResult<RequestResponse, RequestResponse, string, unknown> => {
+  const { slackConnect } = useAPI();
   const queryClient = useQueryClient();
-  return useMutation((slackCode) => API.slackConnect(slackCode), {
+  return useMutation((slackCode) => slackConnect(slackCode), {
     onSuccess: () => queryClient.invalidateQueries([USER_QUERY_KEY]),
   });
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const useUsers = (filters?: any) =>
-  useInfiniteQuery<PaginationResponse<UserList>, RequestResponse>(
+export const useUsers = (filters?: any) => {
+  const { getUsers } = useAPI();
+  return useInfiniteQuery<PaginationResponse<UserList>, RequestResponse>(
     [USERS_QUERY_KEY, filters],
-    ({ pageParam = 1 }) => API.getUsers({ ...filters, page: pageParam }),
+    ({ pageParam = 1 }) => getUsers({ ...filters, page: pageParam }),
     {
       getNextPageParam: (lastPage) => lastPage.next,
     },
   );
+};
 
 export const useUpdateUser = (): UseMutationResult<User, RequestResponse, { userId: string; user: Partial<User> }, unknown> => {
+  const { updateUserData } = useAPI();
   const queryClient = useQueryClient();
-  return useMutation(({ userId, user }) => API.updateUserData(userId, user), {
+  return useMutation(({ userId, user }) => updateUserData(userId, user), {
     onSuccess: (data) => {
       queryClient.invalidateQueries([USERS_QUERY_KEY]);
       const user = queryClient.getQueryData<User | undefined>([USER_QUERY_KEY]);
@@ -146,14 +164,20 @@ export const useUpdateUser = (): UseMutationResult<User, RequestResponse, { user
   });
 };
 
-export const useExportUserData = (): UseMutationResult<RequestResponse, RequestResponse, unknown, unknown> => useMutation(() => API.exportUserData());
+export const useExportUserData = (): UseMutationResult<RequestResponse, RequestResponse, unknown, unknown> => {
+  const { exportUserData } = useAPI();
+  return useMutation(() => exportUserData());
+};
 
-export const useDeleteUser = (): UseMutationResult<RequestResponse, RequestResponse, string | undefined, unknown> =>
-  useMutation((userId) => API.deleteUser(userId));
+export const useDeleteUser = (): UseMutationResult<RequestResponse, RequestResponse, string | undefined, unknown> => {
+  const { deleteUser } = useAPI();
+  return useMutation((userId) => deleteUser(userId));
+};
 
 export const useActivateUser = (): UseMutationResult<RequestResponse, RequestResponse, string, unknown> => {
+  const { activateUser } = useAPI();
   const queryClient = useQueryClient();
-  return useMutation((userId) => API.activateUser(userId), {
+  return useMutation((userId) => activateUser(userId), {
     onSuccess: () => {
       queryClient.invalidateQueries([USERS_QUERY_KEY]);
     },
@@ -161,8 +185,9 @@ export const useActivateUser = (): UseMutationResult<RequestResponse, RequestRes
 };
 
 export const useDeclineUser = (): UseMutationResult<RequestResponse, RequestResponse, { userId: string; reason: string }, unknown> => {
+  const { declineUser } = useAPI();
   const queryClient = useQueryClient();
-  return useMutation(({ userId, reason }) => API.declineUser(userId, reason), {
+  return useMutation(({ userId, reason }) => declineUser(userId, reason), {
     onSuccess: () => {
       queryClient.invalidateQueries([USERS_QUERY_KEY]);
     },

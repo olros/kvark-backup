@@ -24,6 +24,7 @@ import { useAnalytics, useShare } from 'hooks/Utils';
 import { blobToFile, getCroppedImgAsBlob, readFile } from 'components/inputs/ImageUploadUtils';
 import Dialog from 'components/layout/Dialog';
 import Paper, { PaperProps } from 'components/layout/Paper';
+import { useAPI } from 'hooks/API';
 
 const UploadPaper = styled(Paper)(({ theme }) => ({
   display: 'grid',
