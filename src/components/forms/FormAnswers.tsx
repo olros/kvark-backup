@@ -1,3 +1,4 @@
+import { useAuth0 } from '@auth0/auth0-react';
 import DownloadIcon from '@mui/icons-material/FileDownloadRounded';
 import {
   Box,
@@ -19,16 +20,14 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-import { ACCESS_TOKEN, TIHLDE_API_URL, TOKEN_HEADER_NAME } from 'constant';
-import { getCookie } from 'cookie';
+import { TIHLDE_API_URL } from 'constant';
 import { useState } from 'react';
 import { urlEncode } from 'utils';
 
 import { SelectFieldSubmission, SelectFormField, TextFieldSubmission, TextFormField, UserSubmission } from 'types';
 import { FormFieldType, FormResourceType } from 'types/Enums';
 
-import { FORMS_ENDPOINT, SUBMISSIONS_ENDPOINT } from 'api/api';
-
+import { FORMS_ENDPOINT, SUBMISSIONS_ENDPOINT } from 'hooks/API';
 import { useFormById, useFormSubmissions } from 'hooks/Form';
 import { useSnackbar } from 'hooks/Snackbar';
 
@@ -39,6 +38,7 @@ export type FormAnswersProps = {
 };
 
 const FormAnswers = ({ formId }: FormAnswersProps) => {
+  const { getAccessTokenSilently } = useAuth0();
   const showSnackbar = useSnackbar();
   const [selectedPage, setSelectedPage] = useState(0);
   const { data: form, isLoading: isFormLoading } = useFormById(formId || '-');
@@ -78,7 +78,7 @@ const FormAnswers = ({ formId }: FormAnswersProps) => {
     try {
       const headers = new Headers();
       headers.append('Accept', 'text/csv');
-      headers.append(TOKEN_HEADER_NAME, getCookie(ACCESS_TOKEN) as string);
+      headers.append('Authorization', `Bearer ${await getAccessTokenSilently()}`);
       const response = await fetch(`${TIHLDE_API_URL}${FORMS_ENDPOINT}/${formId}/${SUBMISSIONS_ENDPOINT}/download/`, {
         headers,
         method: 'GET',

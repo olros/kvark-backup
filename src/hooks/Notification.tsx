@@ -34,9 +34,6 @@ export const useNotifications = (
 
   return useInfiniteQuery<PaginationResponse<Notification>, RequestResponse>(
     [NOTIFICATION_QUERY_KEY],
-    // TODO: This is saying type x is not assignable to type x. Not going to bother.
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     ({ pageParam = 1 }) => getNotifications({ page: pageParam }),
     {
       ...options,
@@ -44,18 +41,15 @@ export const useNotifications = (
       onSuccess: async (data) => {
         // Get not read notifications
         const notifications = data.pages
-          // @ts-ignore
           .map((page) => page.results)
           .flat()
           .filter((not) => !not.read);
         // If some not read notifications exists, mark them as read
         if (notifications.length) {
           await Promise.allSettled(notifications.map((notification) => updateNotification(notification.id, { read: true })));
-          // @ts-ignore
           const newPagesArray = data.pages.map((page) => ({ ...page, results: page.results.map((val) => ({ ...val, read: true })) }));
           queryClient.invalidateQueries([USER_QUERY_KEY]);
           // Update the NewQueryData-variable.
-          // @ts-ignore
           setNewQueryData({ pages: newPagesArray, pageParams: data.pageParams });
         }
       },

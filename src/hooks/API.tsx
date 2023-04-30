@@ -44,6 +44,7 @@ import {
   MembershipHistoryMutate,
   News,
   NewsRequired,
+  Notification,
   PaginationResponse,
   Picture,
   PublicRegistration,
@@ -720,7 +721,11 @@ export const useAPI = () => {
       }),
 
     getPicture: async (galleryId: Gallery['id'], pictureId: Picture['id']) =>
-      ApiFetch<Picture>({ method: 'GET', url: `${GALLERY_ENDPOINT}/${galleryId}/${PICTURE_ENDPOINT}/${pictureId}`, token: await getAccessTokenSilently() }),
+      ApiFetch<Picture>({
+        method: 'GET',
+        endpoint: `${GALLERY_ENDPOINT}/${galleryId}/${PICTURE_ENDPOINT}/${pictureId}`,
+        token: await getAccessTokenSilently(),
+      }),
 
     createPicture: async (galleryId: Gallery['id'], files: File | File[] | Blob) =>
       ApiFetch<RequestResponse>({

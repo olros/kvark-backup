@@ -109,7 +109,7 @@ export const useUpdatePicture = (galleryId: Gallery['id'], pictureId: Picture['i
 export const useDeletePicture = (galleryId: Gallery['id'], pictureId: Picture['id']): UseMutationResult<RequestResponse, RequestResponse, unknown, unknown> => {
   const { deletePicture } = useAPI();
   const queryClient = useQueryClient();
-  
+
   return useMutation(() => deletePicture(galleryId, pictureId), {
     onSuccess: () => queryClient.invalidateQueries(GALLERY_QUERY_KEYS.pictures.all(galleryId)),
   });

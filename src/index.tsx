@@ -18,7 +18,6 @@ import { broadcastQueryClient } from 'react-query/broadcastQueryClient-experimen
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { BrowserRouter } from 'react-router-dom';
 
-import { useAPI } from 'hooks/API';
 import { MiscProvider } from 'hooks/Misc';
 import { SnackbarProvider } from 'hooks/Snackbar';
 import { ThemeProvider } from 'hooks/Theme';

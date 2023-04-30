@@ -16,15 +16,13 @@ import { forwardRef, useCallback, useState } from 'react';
 import Cropper from 'react-easy-crop';
 import { FieldError, FieldValues, Path, PathValue, UnpackNestedValue, UseFormRegisterReturn, UseFormReturn } from 'react-hook-form';
 
-import API from 'api/api';
-
+import { useAPI } from 'hooks/API';
 import { useSnackbar } from 'hooks/Snackbar';
 import { useAnalytics, useShare } from 'hooks/Utils';
 
 import { blobToFile, getCroppedImgAsBlob, readFile } from 'components/inputs/ImageUploadUtils';
 import Dialog from 'components/layout/Dialog';
 import Paper, { PaperProps } from 'components/layout/Paper';
-import { useAPI } from 'hooks/API';
 
 const UploadPaper = styled(Paper)(({ theme }) => ({
   display: 'grid',
@@ -66,6 +64,7 @@ export const GenericImageUpload = <FormValues extends FieldValues>({
   paperProps,
   ...props
 }: ImageUploadProps<FormValues>) => {
+  const API = useAPI();
   const name = register.name as Path<FormValues>;
   const { [name]: fieldError } = formState.errors;
   const error = fieldError as FieldError;
@@ -187,11 +186,11 @@ export const GenericImageUpload = <FormValues extends FieldValues>({
   );
 };
 
-export const ImageUpload = forwardRef(GenericImageUpload) as <FormValues>(
+export const ImageUpload = forwardRef(GenericImageUpload) as <FormValues extends FieldValues>(
   props: ImageUploadProps<FormValues> & { ref?: React.ForwardedRef<HTMLDivElement> },
 ) => ReturnType<typeof GenericImageUpload>;
 
-export type FormFileUploadProps<FormValues> = Omit<ImageUploadProps<FormValues>, 'ratio'> & {
+export type FormFileUploadProps<FormValues extends FieldValues> = Omit<ImageUploadProps<FormValues>, 'ratio'> & {
   accept?: React.InputHTMLAttributes<HTMLInputElement>['accept'];
 };
 
@@ -205,6 +204,7 @@ export const FormFileUpload = <FormValues extends FieldValues>({
   accept,
   ...props
 }: FormFileUploadProps<FormValues>) => {
+  const { uploadFile } = useAPI();
   const name = register.name as Path<FormValues>;
   const { [name]: fieldError } = formState.errors;
   const error = fieldError as FieldError;
@@ -215,10 +215,11 @@ export const FormFileUpload = <FormValues extends FieldValues>({
 
   const upload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
+
     if (file) {
       setIsLoading(true);
       try {
-        const data = await API.uploadFile(file);
+        const data = await uploadFile(file);
         event('upload', 'file-upload', 'Uploaded file');
         setValue(name, data.url as UnpackNestedValue<PathValue<FormValues, Path<FormValues>>>);
         showSnackbar('Filen ble lastet opp, husk å trykk lagre', 'info');
@@ -257,11 +258,12 @@ export const FormFileUpload = <FormValues extends FieldValues>({
   );
 };
 
-export type FileUploadProps<FormValues> = Pick<ImageUploadProps<FormValues>, 'label' | 'paperProps'> &
+export type FileUploadProps<FormValues extends FieldValues> = Pick<ImageUploadProps<FormValues>, 'label' | 'paperProps'> &
   ButtonProps &
   Pick<FormFileUploadProps<FormValues>, 'accept'>;
 
 export const FileUpload = <FormValues extends FieldValues>({ label = 'Last opp filer', accept, paperProps, ...props }: FileUploadProps<FormValues>) => {
+  const { uploadFile } = useAPI();
   const { event } = useAnalytics();
   const showSnackbar = useSnackbar();
   const [isLoading, setIsLoading] = useState(false);
@@ -271,7 +273,7 @@ export const FileUpload = <FormValues extends FieldValues>({ label = 'Last opp f
     if (files) {
       setIsLoading(true);
       try {
-        const data = await Promise.all(Array.from(files).map((file) => API.uploadFile(file)));
+        const data = await Promise.all(Array.from(files).map((file) => uploadFile(file)));
         event('upload', 'file-upload', 'Uploaded file');
         setUploaded(data.map((file) => file.url));
         showSnackbar('Filen(e) ble lastet opp', 'info');
