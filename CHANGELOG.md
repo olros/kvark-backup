@@ -13,6 +13,10 @@
 ## Neste versjon
 - ✨ **Bannere**. Tidsbegrensede bannere kan nå opprettes.
 
+## versjon 2023.13.10
+
+- ⚡ **Oppdatering av betalt arrangement**. Kan ikke skru av betalt arrangement
+
 ## versjon 2023.24.09
 
 - 🎨 **Fult navn**. Kontaktperson på arrangementer vil nå bli vist med fult navn.
