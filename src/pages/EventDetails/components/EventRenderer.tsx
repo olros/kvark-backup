@@ -386,6 +386,13 @@ const EventRenderer = ({ data, preview = false }: EventRendererProps) => {
                   )}
                 </>
               )}
+              
+              {data.is_paid_event&&(registration?.has_paid_order || data.list_count >= data.limit) &&
+              <Link to = "https://www.facebook.com/groups/598608738731749/"><Button className='my-4 w-full'>{registration?.has_paid_order?"Selg billetten din her":"Sjekk om noen selger billett her"}</Button></Link>
+              }
+
+              
+      
             </CardContent>
           </Card>
 
