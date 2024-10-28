@@ -1,7 +1,12 @@
 {
   "root": true,
   "parser": "@typescript-eslint/parser",
-  "plugins": ["react", "react-hooks", "@typescript-eslint", "eslint-plugin-import-helpers"],
+  "plugins": [
+    "react",
+    "react-hooks",
+    "@typescript-eslint",
+    "eslint-plugin-import-helpers"
+  ],
   "parserOptions": {
     "ecmaVersion": 11,
     "sourceType": "module",
@@ -20,7 +25,8 @@
     "plugin:react/recommended",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
-    "plugin:prettier/recommended"
+    "plugin:prettier/recommended",
+    "plugin:storybook/recommended"
   ],
   "globals": {
     "importScripts": true
@@ -29,24 +35,64 @@
     "import-helpers/order-imports": [
       "warn",
       {
-        "groups": [["absolute", "module"], "/^types/", "/^api/", "/^hooks/", "/^pages/", "/^components/", "/^assets/", ["sibling", "parent", "index"]],
+        "groups": [
+          [
+            "absolute",
+            "module"
+          ],
+          "/^types/",
+          "/^api/",
+          "/^hooks/",
+          "/^pages/",
+          "/^components/",
+          "/^assets/",
+          [
+            "sibling",
+            "parent",
+            "index"
+          ]
+        ],
         "newlinesBetween": "always",
-        "alphabetize": { "order": "asc", "ignoreCase": true }
+        "alphabetize": {
+          "order": "asc",
+          "ignoreCase": true
+        }
       }
     ],
-    "sort-imports": ["error", { "ignoreCase": true, "ignoreDeclarationSort": true }],
+    "sort-imports": [
+      "error",
+      {
+        "ignoreCase": true,
+        "ignoreDeclarationSort": true
+      }
+    ],
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "@typescript-eslint/no-empty-function": "off",
     "@typescript-eslint/no-unnecessary-type-constraint": "off",
     "arrow-spacing": "error",
-    "block-spacing": ["error", "never"],
-    "brace-style": ["error", "1tbs"],
+    "block-spacing": [
+      "error",
+      "never"
+    ],
+    "brace-style": [
+      "error",
+      "1tbs"
+    ],
     "comma-spacing": "error",
-    "comma-style": ["error", "last"],
+    "comma-style": [
+      "error",
+      "last"
+    ],
     "endOfLine": "off",
-    "curly": ["error", "all"],
+    "curly": [
+      "error",
+      "all"
+    ],
     "eol-last": "error",
-    "eqeqeq": ["error", "always"],
+    "eqeqeq": [
+      "error",
+      "always"
+    ],
     "func-call-spacing": "error",
     "guard-for-in": "off",
     "jsx-a11y/accessible-emoji": "off",
@@ -66,7 +112,9 @@
     "no-empty-function": [
       "error",
       {
-        "allow": ["arrowFunctions"]
+        "allow": [
+          "arrowFunctions"
+        ]
       }
     ],
     "no-implicit-coercion": "error",
@@ -108,7 +156,10 @@
   },
   "settings": {
     "import/parsers": {
-      "@typescript-eslint/parser": [".ts", ".tsx"]
+      "@typescript-eslint/parser": [
+        ".ts",
+        ".tsx"
+      ]
     },
     "import/resolver": {
       "typescript": {
