@@ -11,6 +11,7 @@
 ### 🎨 - Designendringer
 
 ## Neste versjon
+## Versjon 2024.11.04
 - 🎨 **Designendringer**. Gjort høyden på alle ulike gallerier lik, uavhengig av lengde på beskrivelse. 
 - 🎨 **Designendringer**. Escapet beskrivelse i galleri
 
