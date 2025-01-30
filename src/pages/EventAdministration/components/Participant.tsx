@@ -100,12 +100,12 @@ const Participant = ({ registration, eventId }: ParticipantProps) => {
                 {registration.user_info.first_name} {registration.user_info.last_name}
               </h1>
               <h1 className='text-sm hidden md:block'>{getUserAffiliation(registration.user_info)}</h1>
-              <div className='text-muted-foreground'>
+              <div className='text-muted-foreground '>
                 {registration.user_info.allergy !== '' ? (
                   <>
                     <div className='flex gap-1 items-center'>
-                      <NutOff className='w-3.5 h-3.5 stroke-[1.5px] text-muted-foreground float-left' />
-                      <span className='float-right'>{registration.user_info.allergy}</span>
+                      <NutOff className='w-3.5 h-3.5 stroke-[1.5px] text-muted-foreground float-left shrink-0' />
+                      <span className='break-words line-clamp-1'> {registration.user_info.allergy}</span>
                     </div>
                   </>
                 ) : (
@@ -154,7 +154,7 @@ const Participant = ({ registration, eventId }: ParticipantProps) => {
 
             {!registration.is_on_wait && (
               <label
-                className='w-full md:w-auto flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 cursor-pointer hover:border-primary'
+                className='w-full md:w-auto flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4 cursor-pointer hover:border-primary shrink-0'
                 htmlFor={registration.user_info.user_id}>
                 <Checkbox checked={checkedState} id={registration.user_info.user_id} onCheckedChange={(checked) => handleAttendedCheck(Boolean(checked))} />
                 <div className='space-y-1 leading-none'>
